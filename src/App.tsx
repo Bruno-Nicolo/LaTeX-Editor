@@ -7,12 +7,14 @@ import { Button } from "./components/ui/button";
 
 function App() {
   return (
-    <div className="[--header-height:calc(theme(spacing.14))]">
+    <div className="[--header-height:calc(theme(spacing.16))]">
       <SidebarProvider className="flex flex-col">
         <SiteHeader />
         <div className="flex flex-1">
-          <AppSidebar variant="floating" />
-          <SidebarInset>{/* Editor & Preview */}</SidebarInset>
+          <AppSidebar />
+          <SidebarInset className="flex flex-row">
+            {/* Editor & Preview */}
+          </SidebarInset>
         </div>
         <Button className="w-full rounded-none text-lg py-6">
           Compile
