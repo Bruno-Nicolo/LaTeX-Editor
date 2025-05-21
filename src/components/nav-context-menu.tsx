@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { useContext, type ReactNode } from "react";
 import {
   ContextMenu,
   ContextMenuCheckboxItem,
@@ -6,6 +6,7 @@ import {
   ContextMenuItem,
   ContextMenuTrigger,
 } from "./ui/context-menu";
+import { GlobalContext } from "@/context";
 
 export function NavContextMenu(props: {
   item: {
@@ -18,11 +19,17 @@ export function NavContextMenu(props: {
   };
   children: ReactNode;
 }) {
+  const context = useContext(GlobalContext);
+
+  const renameItem = () => {
+    context?.setEditedItemId(props.item.id);
+  };
+
   return (
     <ContextMenu>
       <ContextMenuTrigger>{props.children}</ContextMenuTrigger>
       <ContextMenuContent>
-        <ContextMenuItem>Rename</ContextMenuItem>
+        <ContextMenuItem onClick={renameItem}>Rename</ContextMenuItem>
         <ContextMenuCheckboxItem checked={props.item.workbench}>
           Workbench
         </ContextMenuCheckboxItem>

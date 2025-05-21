@@ -1,37 +1,34 @@
 import {
   Bold,
+  Heading,
+  Image,
   Italic,
   List,
   ListOrdered,
   MoreHorizontal,
+  Quote,
   RotateCcw,
   RotateCw,
+  Sigma,
+  Table,
   Underline,
 } from "lucide-react";
 import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
 import type { ReactNode } from "react";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "./ui/select";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 
 export function Toolbar() {
   return (
     <div className="bg-card border rounded-md flex gap-4 py-1 px-4">
       <ToolbarGroup>
-        <ToolbarButton>
+        <ToolbarButton icon>
           <Bold />
         </ToolbarButton>
-        <ToolbarButton>
+        <ToolbarButton icon>
           <Italic />
         </ToolbarButton>
-        <ToolbarButton>
+        <ToolbarButton icon>
           <Underline />
         </ToolbarButton>
       </ToolbarGroup>
@@ -39,28 +36,45 @@ export function Toolbar() {
       <Separator orientation="vertical" />
 
       <ToolbarGroup>
-        <ToolbarButton>
+        <ToolbarButton icon>
           <List />
         </ToolbarButton>
-        <ToolbarButton>
+        <ToolbarButton icon>
           <ListOrdered />
         </ToolbarButton>
+        <HeadingsPopover>
+          <ToolbarButton icon>
+            <Heading />
+          </ToolbarButton>
+        </HeadingsPopover>
       </ToolbarGroup>
 
       <Separator orientation="vertical" />
 
       <ToolbarGroup>
-        <FontSelector />
-        <FontSizeSelector />
+        <ImagePopover>
+          <ToolbarButton icon>
+            <Image />
+          </ToolbarButton>
+        </ImagePopover>
+        <ToolbarButton icon>
+          <Sigma />
+        </ToolbarButton>
+        <ToolbarButton icon>
+          <Table />
+        </ToolbarButton>
+        <ToolbarButton icon>
+          <Quote />
+        </ToolbarButton>
       </ToolbarGroup>
 
       <Separator orientation="vertical" />
 
       <ToolbarGroup>
-        <ToolbarButton>
+        <ToolbarButton icon>
           <RotateCcw />
         </ToolbarButton>
-        <ToolbarButton>
+        <ToolbarButton icon>
           <RotateCw />
         </ToolbarButton>
       </ToolbarGroup>
@@ -68,7 +82,7 @@ export function Toolbar() {
       <Separator orientation="vertical" />
 
       <ToolbarGroup>
-        <ToolbarButton>
+        <ToolbarButton icon>
           <MoreHorizontal />
         </ToolbarButton>
       </ToolbarGroup>
@@ -76,11 +90,21 @@ export function Toolbar() {
   );
 }
 
-function ToolbarButton(props: { children: ReactNode }) {
+function ToolbarButton(props: { children: ReactNode; icon?: boolean }) {
   return (
-    <Button variant={"ghost"} className="w-8 h-8">
+    <div
+      className={`p-2 inline-flex items-center justify-${
+        props.icon ? "center" : "left"
+      } rounded-md text-md font-medium cursor-pointer hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50 ${
+        props.icon ? "h-8 w-8" : "w-full"
+      }`}
+    >
       {props.children}
-    </Button>
+    </div>
+
+    // <Button variant={"ghost"} className="w-8 h-8">
+    //   {props.children}
+    // </Button>
   );
 }
 
@@ -88,45 +112,38 @@ function ToolbarGroup(props: { children: ReactNode }) {
   return <div className="flex gap-1">{props.children}</div>;
 }
 
-function FontSelector() {
+function HeadingsPopover(props: { children: ReactNode }) {
   return (
-    <Select defaultValue={"Inter"}>
-      <SelectTrigger size="sm" className="w-[150px]">
-        {/* TODO: set the default font value */}
-        <SelectValue />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectGroup>
-          <SelectLabel>Fonts</SelectLabel>
-          <SelectItem value="Inter">Inter</SelectItem>
-          <SelectItem value="Consolas">Consolas</SelectItem>
-          <SelectItem value="Roboto Mono">Roboto Mono</SelectItem>
-          <SelectItem value="JetBrains Mono">JetBrains Mono</SelectItem>
-        </SelectGroup>
-      </SelectContent>
-    </Select>
+    <Popover>
+      <PopoverTrigger>{props.children}</PopoverTrigger>
+      <PopoverContent className="max-w-60">
+        <Button className="text-2xl w-full" variant={"ghost"}>
+          Heading 1
+        </Button>
+        <Button className="text-xl w-full" variant={"ghost"}>
+          Heading 2
+        </Button>
+        <Button className="text-lg w-full" variant={"ghost"}>
+          Heading 3
+        </Button>
+        <Button className="text-md w-full" variant={"ghost"}>
+          Heading 4
+        </Button>
+      </PopoverContent>
+    </Popover>
   );
 }
 
-function FontSizeSelector() {
-  const fontSizes = [8, 9, 10, 11, 12, 14, 18, 24, 30, 36, 48, 60, 72, 96];
-
+function ImagePopover(props: { children: ReactNode }) {
   return (
-    <Select defaultValue={"14"}>
-      <SelectTrigger className="w-[70px]" size="sm">
-        {/* TODO: set the default font value */}
-        <SelectValue />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectGroup>
-          <SelectLabel>Size</SelectLabel>
-          {fontSizes.map((size) => (
-            <SelectItem value={`${size}`} key={size}>
-              {size}
-            </SelectItem>
-          ))}
-        </SelectGroup>
-      </SelectContent>
-    </Select>
+    <Popover>
+      <PopoverTrigger>{props.children}</PopoverTrigger>
+      <PopoverContent className="max-w-48">
+        <ToolbarButton>Center</ToolbarButton>
+        <ToolbarButton>Left</ToolbarButton>
+        <ToolbarButton>Right</ToolbarButton>
+        <ToolbarButton>Text-Wrap</ToolbarButton>
+      </PopoverContent>
+    </Popover>
   );
 }

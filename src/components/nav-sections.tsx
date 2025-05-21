@@ -30,6 +30,7 @@ import {
 } from "./ui/sidebar";
 import { Separator } from "./ui/separator";
 import { CreationDialog } from "./nav-dialogs";
+import { RenamingArea } from "./ui/renaming-area";
 
 // PROBLEMA: quando salvo file/cartelle nella workbench come faccio a capire a che
 // progetto appartengono? bibliography.bib appartiene al progetto 1 o a progetto 2?
@@ -185,7 +186,7 @@ export function NavItem(props: {
           <SidebarMenuButton className="truncate" tooltip={props.item.name}>
             {/* Different Icons for Images, Bib, Tex, ecc. ? */}
             {props.item.type == "file" ? <File /> : <BookOpen />}
-            <span>{props.item.name}</span>
+            <RenamingArea id={props.item.id}>{props.item.name}</RenamingArea>
           </SidebarMenuButton>
         </NavContextMenu>
       </SidebarMenuItem>
@@ -201,7 +202,7 @@ export function NavItem(props: {
             <SidebarMenuButton tooltip={props.item.name} className="truncate ">
               <ChevronRight className="toggle" />
               <Folder />
-              <span>{props.item.name}</span>
+              <RenamingArea id={props.item.id}>{props.item.name}</RenamingArea>
             </SidebarMenuButton>
           </CollapsibleTrigger>
         </NavContextMenu>
