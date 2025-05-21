@@ -9,7 +9,8 @@ import {
 import { Button } from "@/components/ui/button";
 
 import { useSidebar } from "@/components/ui/sidebar";
-import { Toolbar } from "./toolbar";
+import { Toolbar, ToolbarButton } from "./toolbar";
+import { SettingsMenu } from "./settings";
 
 export function SiteHeader() {
   const { toggleSidebar } = useSidebar();
@@ -36,9 +37,11 @@ export function SiteHeader() {
         <Bell />
       </Button>
 
-      <Button className="h-8 w-8" variant="ghost" size="icon">
-        <Settings />
-      </Button>
+      <SettingsMenu>
+        <ToolbarButton icon>
+          <Settings />
+        </ToolbarButton>
+      </SettingsMenu>
 
       <Button className="h-8 w-8" variant="ghost" size="icon">
         <CircleUserRound />

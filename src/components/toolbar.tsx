@@ -90,21 +90,19 @@ export function Toolbar() {
   );
 }
 
-function ToolbarButton(props: { children: ReactNode; icon?: boolean }) {
+export function ToolbarButton(props: { children: ReactNode; icon?: boolean }) {
   return (
     <div
-      className={`p-2 inline-flex items-center justify-${
+      className={`inline-flex items-center justify-${
         props.icon ? "center" : "left"
-      } rounded-md text-md font-medium cursor-pointer hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50 ${
-        props.icon ? "h-8 w-8" : "w-full"
-      }`}
+      } gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive cursor-pointer 
+      ${
+        props.icon ? "h-8 w-8" : "w-full p-2"
+      } hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50
+      `}
     >
       {props.children}
     </div>
-
-    // <Button variant={"ghost"} className="w-8 h-8">
-    //   {props.children}
-    // </Button>
   );
 }
 
