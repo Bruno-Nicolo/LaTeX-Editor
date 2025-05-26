@@ -1,3 +1,17 @@
 *[data-state="open"] .toggle {
   transform: rotate(90deg);
 }
+
+.openingAnimation {
+  transform: translateX(-89%);
+  transition-property: all;
+  transition-duration: 110ms;
+  transition-timing-function: linear;
+}
+
+.closingAnimation {
+  transform: translateX(0%);
+  transition-property: all;
+  transition-duration: 110ms;
+  transition-timing-function: linear;
+}

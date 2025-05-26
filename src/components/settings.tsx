@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { useContext, useState, type ReactNode } from "react";
 import {
   Select,
   SelectContent,
@@ -20,6 +20,7 @@ import {
 import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 import { Switch } from "./ui/switch";
+import { GlobalContext } from "@/context";
 
 export function SettingsMenu(props: { children: ReactNode }) {
   const [darkModeValue, setDarkModeValue] = useState(getDarkModeValue());
@@ -52,6 +53,11 @@ export function SettingsMenu(props: { children: ReactNode }) {
               defaultChecked={darkModeValue}
               onCheckedChange={updateDarkModeValue}
             />
+          </SettingsGroup>
+
+          <SettingsGroup>
+            <Label htmlFor="LayoutSelector">Layout:</Label>
+            <LayoutSelector />
           </SettingsGroup>
 
           <SettingsGroup>
@@ -94,8 +100,17 @@ function SettingsGroup(props: { children: ReactNode }) {
 }
 
 function ThemeSelector() {
+  const { editorSettings } = useContext(GlobalContext)!;
+  const theme = editorSettings.theme;
+
   return (
-    <Select defaultValue={"material-dark"}>
+    <Select
+      defaultValue={theme.value}
+      onValueChange={(value) => {
+        localStorage.setItem("Theme", value);
+        theme.update(value);
+      }}
+    >
       <SelectTrigger size="sm" className="w-[150px]">
         <SelectValue />
       </SelectTrigger>
@@ -106,7 +121,7 @@ function ThemeSelector() {
           <SelectItem value="material-light">Material Light</SelectItem>
           <SelectItem value="gruvbox-light">Gruvbox Light</SelectItem>
           <SelectItem value="gruvbox-dark">Gruvbox Dark</SelectItem>
-          <SelectItem value="catppuccin">catppuccin</SelectItem>
+          <SelectItem value="catppuccin">Catppuccin</SelectItem>
           <SelectItem value="dracula">Dracula</SelectItem>
         </SelectGroup>
       </SelectContent>
@@ -115,7 +130,7 @@ function ThemeSelector() {
 }
 
 function LanguageSelector() {
-  const languages = [
+  const availableLanguages = [
     "Spagnolo",
     "Italiano",
     "Inglese",
@@ -128,17 +143,29 @@ function LanguageSelector() {
     "Giapponese",
   ].sort();
 
+  const { editorSettings } = useContext(GlobalContext)!;
+  const language = editorSettings.language;
+
   return (
-    <Select defaultValue={"Italiano"}>
+    <Select
+      defaultValue={language.value}
+      onValueChange={(value) => {
+        localStorage.setItem("Language", value);
+        language.update(value);
+      }}
+    >
       <SelectTrigger size="sm" className="w-[150px]">
         <SelectValue />
       </SelectTrigger>
       <SelectContent id="LanguageSelector">
         <SelectGroup>
           <SelectLabel>Themes</SelectLabel>
-          {languages.map((lang, index) => {
+          {availableLanguages.map((lang, index) => {
             return (
-              <SelectItem key={index} value={lang.replace(" ", "-")}>
+              <SelectItem
+                key={index}
+                value={lang.toLocaleLowerCase().replace(" ", "-")}
+              >
                 {lang}
               </SelectItem>
             );
@@ -150,8 +177,17 @@ function LanguageSelector() {
 }
 
 function FontSelector() {
+  const { editorSettings } = useContext(GlobalContext)!;
+  const font = editorSettings.fontFamily;
+
   return (
-    <Select defaultValue={"Inter"}>
+    <Select
+      defaultValue={font.value}
+      onValueChange={(value) => {
+        localStorage.setItem("FontFamily", value);
+        font.update(value);
+      }}
+    >
       <SelectTrigger size="sm" className="w-[150px]">
         <SelectValue />
       </SelectTrigger>
@@ -168,11 +204,49 @@ function FontSelector() {
   );
 }
 
+function LayoutSelector() {
+  const { editorSettings } = useContext(GlobalContext)!;
+  const layout = editorSettings.layout.value;
+
+  return (
+    <Select
+      defaultValue={layout.modeName}
+      onValueChange={(value) => {
+        const settings = getLayoutSettingsFromName(value);
+        localStorage.setItem("Layout", JSON.stringify(settings));
+        editorSettings.layout.update(settings);
+      }}
+    >
+      <SelectTrigger className="w-[150px]" size="sm">
+        <SelectValue />
+      </SelectTrigger>
+      <SelectContent id="LayoutSelector">
+        <SelectGroup>
+          <SelectLabel>Size</SelectLabel>
+          <SelectItem value="HalfSplit">Half Split</SelectItem>
+          <SelectItem value="DynamicSplit">Dynamic Split</SelectItem>
+          <SelectItem value="EditorOnly">Editor Only</SelectItem>
+          <SelectItem value="PDFOnly">Pdf Only</SelectItem>
+        </SelectGroup>
+      </SelectContent>
+    </Select>
+  );
+}
+
 function FontSizeSelector() {
   const fontSizes = [8, 9, 10, 11, 12, 14, 18, 24, 30, 36, 48, 60, 72, 96];
 
+  const { editorSettings } = useContext(GlobalContext)!;
+  const font = editorSettings.fontSize;
+
   return (
-    <Select defaultValue={"14"}>
+    <Select
+      defaultValue={font.value.toString()}
+      onValueChange={(value) => {
+        localStorage.setItem("FontSize", value);
+        font.update(parseInt(value));
+      }}
+    >
       <SelectTrigger className="w-[150px]" size="sm">
         <SelectValue />
       </SelectTrigger>
@@ -199,4 +273,32 @@ function getDarkModeValue() {
   }
 
   return value == "dark";
+}
+
+function getLayoutSettingsFromName(name: string) {
+  if (name == "HalfSplit") {
+    return {
+      modeName: name,
+      editorStyle: "w-[50%]",
+      pdfStyle: "w-[50%]",
+    };
+  } else if (name == "DynamicSplit") {
+    return {
+      modeName: name,
+      editorStyle: `w-[90%]`,
+      pdfStyle: `w-[90%] absolute left-[90%]`,
+    };
+  } else if (name == "EditorOnly") {
+    return {
+      modeName: name,
+      editorStyle: "w-full",
+      pdfStyle: "w-0",
+    };
+  } else {
+    return {
+      modeName: name,
+      editorStyle: "w-0",
+      pdfStyle: "w-full",
+    };
+  }
 }
