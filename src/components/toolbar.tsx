@@ -15,20 +15,36 @@ import {
 } from "lucide-react";
 import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
-import type { ReactNode } from "react";
+import { useContext, type ReactNode } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { GlobalContext } from "@/context";
+import {
+  addCitation,
+  addEquation,
+  addOrderedLists,
+  addUnorderedLists,
+  applyBold,
+  applyItalic,
+  applyUnderline,
+  insertImageCenter,
+  insertImageLeft,
+  insertImageRight,
+  redoHistory,
+  undoHistory,
+} from "./editor/editor-utils";
+import { type EditorView } from "@codemirror/view";
 
 export function Toolbar() {
   return (
     <div className="bg-card border rounded-md flex gap-4 py-1 px-4">
       <ToolbarGroup>
-        <ToolbarButton icon>
+        <ToolbarButton icon modiferMethod={applyBold}>
           <Bold />
         </ToolbarButton>
-        <ToolbarButton icon>
+        <ToolbarButton icon modiferMethod={applyItalic}>
           <Italic />
         </ToolbarButton>
-        <ToolbarButton icon>
+        <ToolbarButton icon modiferMethod={applyUnderline}>
           <Underline />
         </ToolbarButton>
       </ToolbarGroup>
@@ -36,10 +52,10 @@ export function Toolbar() {
       <Separator orientation="vertical" />
 
       <ToolbarGroup>
-        <ToolbarButton icon>
+        <ToolbarButton icon modiferMethod={addUnorderedLists}>
           <List />
         </ToolbarButton>
-        <ToolbarButton icon>
+        <ToolbarButton icon modiferMethod={addOrderedLists}>
           <ListOrdered />
         </ToolbarButton>
         <HeadingsPopover>
@@ -57,13 +73,13 @@ export function Toolbar() {
             <Image />
           </ToolbarButton>
         </ImagePopover>
-        <ToolbarButton icon>
+        <ToolbarButton icon modiferMethod={addEquation}>
           <Sigma />
         </ToolbarButton>
         <ToolbarButton icon>
           <Table />
         </ToolbarButton>
-        <ToolbarButton icon>
+        <ToolbarButton icon modiferMethod={addCitation}>
           <Quote />
         </ToolbarButton>
       </ToolbarGroup>
@@ -71,10 +87,10 @@ export function Toolbar() {
       <Separator orientation="vertical" />
 
       <ToolbarGroup>
-        <ToolbarButton icon>
+        <ToolbarButton icon modiferMethod={undoHistory}>
           <RotateCcw />
         </ToolbarButton>
-        <ToolbarButton icon>
+        <ToolbarButton icon modiferMethod={redoHistory}>
           <RotateCw />
         </ToolbarButton>
       </ToolbarGroup>
@@ -90,9 +106,19 @@ export function Toolbar() {
   );
 }
 
-export function ToolbarButton(props: { children: ReactNode; icon?: boolean }) {
+export function ToolbarButton(props: {
+  children: ReactNode;
+  icon?: boolean;
+  modiferMethod?: (editorViewRef: EditorView) => void;
+}) {
+  const editorViewRef = useContext(GlobalContext)?.editorView;
+
   return (
     <div
+      onClick={() => {
+        if (props.modiferMethod && editorViewRef)
+          props.modiferMethod(editorViewRef.current!);
+      }}
       className={`inline-flex items-center justify-${
         props.icon ? "center" : "left"
       } gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive cursor-pointer 
@@ -137,10 +163,9 @@ function ImagePopover(props: { children: ReactNode }) {
     <Popover>
       <PopoverTrigger>{props.children}</PopoverTrigger>
       <PopoverContent className="max-w-48">
-        <ToolbarButton>Center</ToolbarButton>
-        <ToolbarButton>Left</ToolbarButton>
-        <ToolbarButton>Right</ToolbarButton>
-        <ToolbarButton>Text-Wrap</ToolbarButton>
+        <ToolbarButton modiferMethod={insertImageCenter}>Center</ToolbarButton>
+        <ToolbarButton modiferMethod={insertImageLeft}>Left</ToolbarButton>
+        <ToolbarButton modiferMethod={insertImageRight}>Right</ToolbarButton>
       </PopoverContent>
     </Popover>
   );

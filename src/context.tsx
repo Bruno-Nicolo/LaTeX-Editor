@@ -1,4 +1,11 @@
-import React, { createContext, useState, type ReactNode } from "react";
+import React, {
+  createContext,
+  useRef,
+  useState,
+  type ReactNode,
+  type RefObject,
+} from "react";
+import { type EditorView } from "@codemirror/view";
 
 type layoutSettings = {
   modeName: string;
@@ -6,9 +13,10 @@ type layoutSettings = {
   pdfStyle: string;
 };
 
-type renamingMethods = {
+type contextType = {
   editedItemId: number;
   setEditedItemId: React.Dispatch<React.SetStateAction<number>>;
+  editorView: RefObject<EditorView | null>;
   editorSettings: {
     layout: {
       value: layoutSettings;
@@ -33,9 +41,7 @@ type renamingMethods = {
   };
 };
 
-export const GlobalContext = createContext<renamingMethods | undefined>(
-  undefined
-);
+export const GlobalContext = createContext<contextType | undefined>(undefined);
 
 export default function GlobalState(props: { children: ReactNode }) {
   const [editedItemId, setEditedItemId] = useState(-1);
@@ -45,11 +51,14 @@ export default function GlobalState(props: { children: ReactNode }) {
   const [theme, setTheme] = useState(getTheme());
   const [language, setLanguage] = useState(getLanguage());
 
+  const editorViewRef = useRef<EditorView | null>(null);
+
   return (
     <GlobalContext.Provider
       value={{
-        editedItemId,
-        setEditedItemId,
+        editedItemId: editedItemId,
+        setEditedItemId: setEditedItemId,
+        editorView: editorViewRef,
         editorSettings: {
           layout: {
             value: layout,
@@ -110,7 +119,7 @@ function getFontSize() {
 
 function getTheme() {
   const preference = localStorage.getItem("Theme");
-  const defaultValue = "material-light";
+  const defaultValue = "basic-light";
 
   return preference ?? defaultValue;
 }

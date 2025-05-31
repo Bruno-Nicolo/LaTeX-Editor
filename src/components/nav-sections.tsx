@@ -22,6 +22,9 @@ import {
   ChevronRight,
   File,
   Folder,
+  Maximize2,
+  LibraryBig,
+  Image,
 } from "lucide-react";
 import {
   SidebarGroup,
@@ -32,74 +35,19 @@ import { Separator } from "./ui/separator";
 import { CreationDialog } from "./nav-dialogs";
 import { RenamingArea } from "./ui/renaming-area";
 
-// PROBLEMA: quando salvo file/cartelle nella workbench come faccio a capire a che
-// progetto appartengono? bibliography.bib appartiene al progetto 1 o a progetto 2?
-const MOCKFOLDERS = [
-  {
-    name: "Active Project Name",
-    id: 1,
-    parent_id: 0,
-    type: "project",
-    workbench: false,
-    isActive: true,
-  },
-  {
-    name: "src",
-    id: 2,
-    parent_id: 1,
-    type: "folder",
-    workbench: false,
-    isActive: true,
-  },
-  {
-    name: "index.tex",
-    id: 3,
-    parent_id: 2,
-    type: "file",
-    workbench: false,
-    isActive: true,
-  },
-  {
-    name: "introduction asdadsadsadadada.tex",
-    id: 4,
-    parent_id: 2,
-    type: "file",
-    workbench: true,
-    isActive: true,
-  },
-  {
-    name: "img",
-    id: 5,
-    parent_id: 1,
-    type: "folder",
-    workbench: false,
-    isActive: true,
-  },
-  {
-    name: "bibliography.bib",
-    id: 6,
-    parent_id: 1,
-    type: "file",
-    workbench: true,
-    isActive: true,
-  },
-  {
-    name: "Recent Project 2",
-    id: 7,
-    parent_id: 0,
-    type: "project",
-    workbench: true,
-    isActive: true,
-  },
-  {
-    name: "Sono dell'altro progetto",
-    id: 8,
-    parent_id: 6,
-    type: "folder",
-    workbench: false,
-    isActive: true,
-  },
-];
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { useState, type ReactNode } from "react";
+import { Button } from "./ui/button";
+
+// REMOVE
+import { ACTIVEPROJECTID, getFilePath, MOCKFOLDERS, type file } from "@/temp";
+import CodeMirrorEditor from "./editor/editor";
 
 export function Workbench() {
   const pinnedResources = MOCKFOLDERS.filter((item) => item.workbench == true);
@@ -114,17 +62,46 @@ export function Workbench() {
             Workbench
           </SidebarGroupLabel>
           <SidebarGroupContent className="overflow-y-auto">
-            <FileTree data={pinnedResources} />
+            <FileTree data={pinnedResources} isWorkbenchSection={true} />
           </SidebarGroupContent>
         </SidebarGroup>
       </>
     );
 }
 
-export function MainNav() {
-  // DA RIMUOVERE!!
-  const ACTIVEPROJECTID = 1;
+function WorkbenchPreview(props: { children: ReactNode; item: file }) {
+  const [code, setCode] = useState("Start Writing...");
 
+  return (
+    <Dialog>
+      <DialogTrigger className="truncate w-full">
+        {props.children}
+      </DialogTrigger>
+      <DialogContent className="min-w-[70%] h-[80%] flex flex-col">
+        <DialogHeader className="truncate ">
+          <Button
+            variant={"ghost"}
+            className="w-fit absolute m-2 right-4 top-1"
+          >
+            <Maximize2 />
+          </Button>
+          <DialogTitle className="truncate mr-8">
+            <span>{getFilePath(props.item)}</span>
+          </DialogTitle>
+          <Separator className="my-2" />
+        </DialogHeader>
+        <p className="overflow-y-scroll max-h-[90%]">
+          <CodeMirrorEditor
+            initialDoc={code}
+            onChange={(value) => setCode(value)}
+          />
+        </p>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+export function MainNav() {
   const activeResources = MOCKFOLDERS.filter(
     (item) => item.parent_id == ACTIVEPROJECTID
   );
@@ -151,43 +128,50 @@ export function MainNav() {
 }
 
 export function FileTree(props: {
-  data: {
-    name: string;
-    id: number;
-    parent_id: number;
-    type: "folder" | "file" | "project" | string;
-    workbench: boolean;
-    isActive: boolean;
-  }[];
+  data: file[];
+  isWorkbenchSection?: boolean;
 }) {
   return (
     <SidebarMenu>
       {props.data.map((item) => (
-        <NavItem item={item} key={item.id} />
+        <NavItem
+          item={item}
+          key={item.id}
+          isWorkbenchSection={props.isWorkbenchSection ?? false}
+        />
       ))}
     </SidebarMenu>
   );
 }
 
-export function NavItem(props: {
-  item: {
-    name: string;
-    id: number;
-    parent_id: number;
-    type: "folder" | "file" | "project" | string;
-    workbench: boolean;
-    isActive: boolean;
-  };
-}) {
-  if (props.item.type != "folder") {
+export function NavItem(props: { item: file; isWorkbenchSection?: boolean }) {
+  if (props.item.type === "file") {
     return (
       <SidebarMenuItem>
         <NavContextMenu item={props.item}>
-          <SidebarMenuButton className="truncate" tooltip={props.item.name}>
-            {/* Different Icons for Images, Bib, Tex, ecc. ? */}
-            {props.item.type == "file" ? <File /> : <BookOpen />}
-            <RenamingArea id={props.item.id}>{props.item.name}</RenamingArea>
-          </SidebarMenuButton>
+          {props.isWorkbenchSection != undefined &&
+          props.isWorkbenchSection == true ? (
+            <WorkbenchPreview item={props.item}>
+              <SidebarMenuButton className="truncate" tooltip={props.item.name}>
+                <File />
+                <RenamingArea id={props.item.id}>
+                  {props.item.name}
+                </RenamingArea>
+              </SidebarMenuButton>
+            </WorkbenchPreview>
+          ) : (
+            <SidebarMenuButton className="truncate" tooltip={props.item.name}>
+              {props.item.name.includes(".bib") ? (
+                <LibraryBig />
+              ) : props.item.name.includes(".png") ||
+                props.item.name.includes(".jpg") ? (
+                <Image />
+              ) : (
+                <File />
+              )}
+              <RenamingArea id={props.item.id}>{props.item.name}</RenamingArea>
+            </SidebarMenuButton>
+          )}
         </NavContextMenu>
       </SidebarMenuItem>
     );
@@ -198,10 +182,13 @@ export function NavItem(props: {
     <SidebarMenuItem>
       <Collapsible className="group/collapsible" defaultOpen={true}>
         <NavContextMenu item={props.item}>
-          <CollapsibleTrigger asChild>
+          <CollapsibleTrigger
+            asChild
+            defaultChecked={props.isWorkbenchSection ?? true}
+          >
             <SidebarMenuButton tooltip={props.item.name} className="truncate ">
               <ChevronRight className="toggle" />
-              <Folder />
+              {props.item.type === "folder" ? <Folder /> : <BookOpen />}
               <RenamingArea id={props.item.id}>{props.item.name}</RenamingArea>
             </SidebarMenuButton>
           </CollapsibleTrigger>

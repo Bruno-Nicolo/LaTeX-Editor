@@ -117,12 +117,12 @@ function ThemeSelector() {
       <SelectContent id="ThemeSelector">
         <SelectGroup>
           <SelectLabel>Themes</SelectLabel>
-          <SelectItem value="material-dark">Material Dark</SelectItem>
-          <SelectItem value="material-light">Material Light</SelectItem>
+          <SelectItem value="basic-light">Basic Light</SelectItem>
+          <SelectItem value="basic-dark">Basic Dark</SelectItem>
           <SelectItem value="gruvbox-light">Gruvbox Light</SelectItem>
           <SelectItem value="gruvbox-dark">Gruvbox Dark</SelectItem>
-          <SelectItem value="catppuccin">Catppuccin</SelectItem>
-          <SelectItem value="dracula">Dracula</SelectItem>
+          <SelectItem value="material-dark">Material Dark</SelectItem>
+          <SelectItem value="nord">Nord</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>
@@ -225,6 +225,7 @@ function LayoutSelector() {
           <SelectLabel>Size</SelectLabel>
           <SelectItem value="HalfSplit">Half Split</SelectItem>
           <SelectItem value="DynamicSplit">Dynamic Split</SelectItem>
+          <SelectItem value="Overlap">Overlap</SelectItem>
           <SelectItem value="EditorOnly">Editor Only</SelectItem>
           <SelectItem value="PDFOnly">Pdf Only</SelectItem>
         </SelectGroup>
@@ -285,14 +286,20 @@ function getLayoutSettingsFromName(name: string) {
   } else if (name == "DynamicSplit") {
     return {
       modeName: name,
-      editorStyle: `w-[90%]`,
-      pdfStyle: `w-[90%] absolute left-[90%]`,
+      editorStyle: `w-[80%]`,
+      pdfStyle: `w-[80%] absolute left-[80%]`,
     };
   } else if (name == "EditorOnly") {
     return {
       modeName: name,
       editorStyle: "w-full",
       pdfStyle: "w-0",
+    };
+  } else if (name == "Overlap") {
+    return {
+      modeName: name,
+      editorStyle: `absolute left-0 w-[80%] z-[10]`,
+      pdfStyle: `w-[80%] absolute right-0`,
     };
   } else {
     return {

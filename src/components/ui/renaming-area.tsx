@@ -15,7 +15,6 @@ export function RenamingArea(props: {
       const input = document.getElementsByName("renameFileInput")[0];
 
       if (input != undefined) {
-        console.log(input);
         input.focus();
       }
     }
@@ -25,9 +24,9 @@ export function RenamingArea(props: {
     return (
       <form action="/foo" method="post">
         <input
-          autoFocus
           name="renameFileInput"
           defaultValue={newName}
+          onClick={(e) => e.stopPropagation()}
           onChange={(element) => setName(element.target.value)}
           type="text"
           className={`w-full outline-none ${props.className}`}

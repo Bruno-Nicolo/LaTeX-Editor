@@ -7,14 +7,14 @@ import { Button } from "./components/ui/button";
 import { useContext } from "react";
 import { GlobalContext } from "./context";
 import { PdfViewer } from "./components/pdf-viewer";
-import { MonacoEditor } from "./components/editorMonaco";
-// import { MonacoEditor } from "./components/editorMonaco";
+import { MonacoEditor } from "./components/editor/editorMonaco";
+// import CodeMirrorEditor from "./components/editor/editor";
 
 export default function App() {
   const { editorSettings } = useContext(GlobalContext)!;
   const layoutPreferences = editorSettings.layout.value;
 
-  // const [code, setCode] = useState("Start Writing...");
+  // const [code, setCode] = useState("Start writing...");
 
   return (
     <div className="[--header-height:calc(theme(spacing.16))]">
@@ -29,7 +29,7 @@ export default function App() {
               onChange={(value) => setCode(value)}
               className={layoutPreferences.editorStyle}
             /> */}
-            <MonacoEditor />
+            <MonacoEditor className={layoutPreferences.editorStyle} />
             <PdfViewer
               style={layoutPreferences.pdfStyle}
               layoutMode={layoutPreferences.modeName}

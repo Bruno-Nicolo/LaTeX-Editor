@@ -3,7 +3,7 @@
 }
 
 .openingAnimation {
-  transform: translateX(-89%);
+  transform: translateX(-75%);
   transition-property: all;
   transition-duration: 110ms;
   transition-timing-function: linear;
