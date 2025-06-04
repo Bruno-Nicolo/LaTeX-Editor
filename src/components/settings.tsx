@@ -41,7 +41,7 @@ export function SettingsMenu(props: { children: ReactNode }) {
             Change your editor settings
           </SheetTitle>
           <SheetDescription>
-            Customize you editing experience to your liking
+            Customize your editing experience to your liking
           </SheetDescription>
         </SheetHeader>
 

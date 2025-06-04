@@ -5,7 +5,7 @@ import React, {
   type ReactNode,
   type RefObject,
 } from "react";
-import { type EditorView } from "@codemirror/view";
+import type { editor } from "monaco-editor";
 
 type layoutSettings = {
   modeName: string;
@@ -16,7 +16,7 @@ type layoutSettings = {
 type contextType = {
   editedItemId: number;
   setEditedItemId: React.Dispatch<React.SetStateAction<number>>;
-  editorView: RefObject<EditorView | null>;
+  editorView: RefObject<editor.IStandaloneCodeEditor | null>;
   editorSettings: {
     layout: {
       value: layoutSettings;
@@ -51,7 +51,7 @@ export default function GlobalState(props: { children: ReactNode }) {
   const [theme, setTheme] = useState(getTheme());
   const [language, setLanguage] = useState(getLanguage());
 
-  const editorViewRef = useRef<EditorView | null>(null);
+  const editorViewRef = useRef<editor.IStandaloneCodeEditor | null>(null);
 
   return (
     <GlobalContext.Provider

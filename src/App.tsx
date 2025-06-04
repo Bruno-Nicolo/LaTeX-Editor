@@ -8,13 +8,11 @@ import { useContext } from "react";
 import { GlobalContext } from "./context";
 import { PdfViewer } from "./components/pdf-viewer";
 import { MonacoEditor } from "./components/editor/editorMonaco";
-// import CodeMirrorEditor from "./components/editor/editor";
+import { ChevronDown } from "lucide-react";
 
 export default function App() {
   const { editorSettings } = useContext(GlobalContext)!;
   const layoutPreferences = editorSettings.layout.value;
-
-  // const [code, setCode] = useState("Start writing...");
 
   return (
     <div className="[--header-height:calc(theme(spacing.16))]">
@@ -24,12 +22,16 @@ export default function App() {
           <AppSidebar />
           <SidebarInset className="flex flex-row overflow-x-hidden">
             {/* Editor & Preview */}
-            {/* <CodeMirrorEditor
-              initialDoc={code}
-              onChange={(value) => setCode(value)}
-              className={layoutPreferences.editorStyle}
-            /> */}
-            <MonacoEditor className={layoutPreferences.editorStyle} />
+            <div className={layoutPreferences.editorStyle}>
+              <div className="h-[65%]">
+                <MonacoEditor />
+              </div>
+              <div className="bg-secondary h-[35%] w-full">
+                <div className="h-8 bg-secondary-foreground flex items-center text-secondary p-4">
+                  <ChevronDown />
+                </div>
+              </div>
+            </div>
             <PdfViewer
               style={layoutPreferences.pdfStyle}
               layoutMode={layoutPreferences.modeName}

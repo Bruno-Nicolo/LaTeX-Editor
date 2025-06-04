@@ -42,12 +42,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useState, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import { Button } from "./ui/button";
 
 // REMOVE
 import { ACTIVEPROJECTID, getFilePath, MOCKFOLDERS, type file } from "@/temp";
-import CodeMirrorEditor from "./editor/editor";
+import { MonacoEditor } from "./editor/editorMonaco";
 
 export function Workbench() {
   const pinnedResources = MOCKFOLDERS.filter((item) => item.workbench == true);
@@ -70,8 +70,6 @@ export function Workbench() {
 }
 
 function WorkbenchPreview(props: { children: ReactNode; item: file }) {
-  const [code, setCode] = useState("Start Writing...");
-
   return (
     <Dialog>
       <DialogTrigger className="truncate w-full">
@@ -85,17 +83,18 @@ function WorkbenchPreview(props: { children: ReactNode; item: file }) {
           >
             <Maximize2 />
           </Button>
-          <DialogTitle className="truncate mr-8">
+          <DialogTitle className="truncate mr-8 pb-4">
             <span>{getFilePath(props.item)}</span>
           </DialogTitle>
           <Separator className="my-2" />
         </DialogHeader>
-        <p className="overflow-y-scroll max-h-[90%]">
-          <CodeMirrorEditor
-            initialDoc={code}
-            onChange={(value) => setCode(value)}
-          />
-        </p>
+        {/* Mostra l'editor solo con file LaTeX */}
+        {props.item.name.includes(".tex") ||
+        props.item.name.includes(".bib") ? (
+          <MonacoEditor />
+        ) : (
+          <p>Embed photo</p>
+        )}
       </DialogContent>
     </Dialog>
   );
@@ -153,7 +152,14 @@ export function NavItem(props: { item: file; isWorkbenchSection?: boolean }) {
           props.isWorkbenchSection == true ? (
             <WorkbenchPreview item={props.item}>
               <SidebarMenuButton className="truncate" tooltip={props.item.name}>
-                <File />
+                {props.item.name.includes(".bib") ? (
+                  <LibraryBig />
+                ) : props.item.name.includes(".png") ||
+                  props.item.name.includes(".jpg") ? (
+                  <Image />
+                ) : (
+                  <File />
+                )}
                 <RenamingArea id={props.item.id}>
                   {props.item.name}
                 </RenamingArea>

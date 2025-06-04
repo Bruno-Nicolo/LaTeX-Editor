@@ -18,21 +18,35 @@ import { Separator } from "./ui/separator";
 import { useContext, type ReactNode } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { GlobalContext } from "@/context";
+// import {
+//   addCitation,
+//   addEquation,
+//   addOrderedLists,
+//   addUnorderedLists,
+//   applyBold,
+//   applyItalic,
+//   applyUnderline,
+//   insertImageCenter,
+//   insertImageLeft,
+//   insertImageRight,
+//   redoHistory,
+//   undoHistory,
+// } from "./editor/editor-utils";
+import type { editor } from "monaco-editor";
 import {
-  addCitation,
-  addEquation,
-  addOrderedLists,
-  addUnorderedLists,
   applyBold,
+  applyBulletList,
+  applyCite,
+  applyEquation,
   applyItalic,
+  applyNumberedList,
   applyUnderline,
-  insertImageCenter,
-  insertImageLeft,
-  insertImageRight,
-  redoHistory,
-  undoHistory,
-} from "./editor/editor-utils";
-import { type EditorView } from "@codemirror/view";
+  placeImageCenter,
+  placeImageLeft,
+  placeImageRight,
+  redo,
+  undo,
+} from "./editor/monaco-utils";
 
 export function Toolbar() {
   return (
@@ -52,10 +66,10 @@ export function Toolbar() {
       <Separator orientation="vertical" />
 
       <ToolbarGroup>
-        <ToolbarButton icon modiferMethod={addUnorderedLists}>
+        <ToolbarButton icon modiferMethod={applyBulletList}>
           <List />
         </ToolbarButton>
-        <ToolbarButton icon modiferMethod={addOrderedLists}>
+        <ToolbarButton icon modiferMethod={applyNumberedList}>
           <ListOrdered />
         </ToolbarButton>
         <HeadingsPopover>
@@ -73,13 +87,13 @@ export function Toolbar() {
             <Image />
           </ToolbarButton>
         </ImagePopover>
-        <ToolbarButton icon modiferMethod={addEquation}>
+        <ToolbarButton icon modiferMethod={applyEquation}>
           <Sigma />
         </ToolbarButton>
         <ToolbarButton icon>
           <Table />
         </ToolbarButton>
-        <ToolbarButton icon modiferMethod={addCitation}>
+        <ToolbarButton icon modiferMethod={applyCite}>
           <Quote />
         </ToolbarButton>
       </ToolbarGroup>
@@ -87,10 +101,10 @@ export function Toolbar() {
       <Separator orientation="vertical" />
 
       <ToolbarGroup>
-        <ToolbarButton icon modiferMethod={undoHistory}>
+        <ToolbarButton icon modiferMethod={undo}>
           <RotateCcw />
         </ToolbarButton>
-        <ToolbarButton icon modiferMethod={redoHistory}>
+        <ToolbarButton icon modiferMethod={redo}>
           <RotateCw />
         </ToolbarButton>
       </ToolbarGroup>
@@ -109,7 +123,7 @@ export function Toolbar() {
 export function ToolbarButton(props: {
   children: ReactNode;
   icon?: boolean;
-  modiferMethod?: (editorViewRef: EditorView) => void;
+  modiferMethod?: (editorViewRef: editor.IStandaloneCodeEditor) => void;
 }) {
   const editorViewRef = useContext(GlobalContext)?.editorView;
 
@@ -163,9 +177,9 @@ function ImagePopover(props: { children: ReactNode }) {
     <Popover>
       <PopoverTrigger>{props.children}</PopoverTrigger>
       <PopoverContent className="max-w-48">
-        <ToolbarButton modiferMethod={insertImageCenter}>Center</ToolbarButton>
-        <ToolbarButton modiferMethod={insertImageLeft}>Left</ToolbarButton>
-        <ToolbarButton modiferMethod={insertImageRight}>Right</ToolbarButton>
+        <ToolbarButton modiferMethod={placeImageCenter}>Center</ToolbarButton>
+        <ToolbarButton modiferMethod={placeImageLeft}>Left</ToolbarButton>
+        <ToolbarButton modiferMethod={placeImageRight}>Right</ToolbarButton>
       </PopoverContent>
     </Popover>
   );
