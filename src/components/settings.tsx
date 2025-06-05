@@ -21,6 +21,7 @@ import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 import { Switch } from "./ui/switch";
 import { GlobalContext } from "@/context";
+import { themesArray } from "./editor/latex-language-Monaco/theme";
 
 export function SettingsMenu(props: { children: ReactNode }) {
   const [darkModeValue, setDarkModeValue] = useState(getDarkModeValue());
@@ -102,6 +103,9 @@ function SettingsGroup(props: { children: ReactNode }) {
 function ThemeSelector() {
   const { editorSettings } = useContext(GlobalContext)!;
   const theme = editorSettings.theme;
+  const themeArraySorted = themesArray.sort((a, b) =>
+    a.name.localeCompare(b.name)
+  );
 
   return (
     <Select
@@ -117,12 +121,13 @@ function ThemeSelector() {
       <SelectContent id="ThemeSelector">
         <SelectGroup>
           <SelectLabel>Themes</SelectLabel>
-          <SelectItem value="basic-light">Basic Light</SelectItem>
-          <SelectItem value="basic-dark">Basic Dark</SelectItem>
-          <SelectItem value="gruvbox-light">Gruvbox Light</SelectItem>
-          <SelectItem value="gruvbox-dark">Gruvbox Dark</SelectItem>
-          <SelectItem value="material-dark">Material Dark</SelectItem>
-          <SelectItem value="nord">Nord</SelectItem>
+          {themeArraySorted.map((theme) => {
+            return (
+              <SelectItem key={theme.name} value={theme.name}>
+                {theme.name}
+              </SelectItem>
+            );
+          })}
         </SelectGroup>
       </SelectContent>
     </Select>
@@ -194,10 +199,9 @@ function FontSelector() {
       <SelectContent id="FontSelector">
         <SelectGroup>
           <SelectLabel>Fonts</SelectLabel>
-          <SelectItem value="Inter">Inter</SelectItem>
-          <SelectItem value="Consolas">Consolas</SelectItem>
-          <SelectItem value="Roboto Mono">Roboto Mono</SelectItem>
-          <SelectItem value="JetBrains Mono">JetBrains Mono</SelectItem>
+          <SelectItem value="mono">Monospace</SelectItem>
+          <SelectItem value="serif">Serif</SelectItem>
+          <SelectItem value="sans">Sans-Serif</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>
@@ -235,7 +239,7 @@ function LayoutSelector() {
 }
 
 function FontSizeSelector() {
-  const fontSizes = [8, 9, 10, 11, 12, 14, 18, 24, 30, 36, 48, 60, 72, 96];
+  const fontSizes = [12, 14, 16, 18, 20, 24];
 
   const { editorSettings } = useContext(GlobalContext)!;
   const font = editorSettings.fontSize;

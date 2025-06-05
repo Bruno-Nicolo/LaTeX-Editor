@@ -22,7 +22,7 @@ export default function App() {
           <AppSidebar />
           <SidebarInset className="flex flex-row overflow-x-hidden">
             {/* Editor & Preview */}
-            <div className={layoutPreferences.editorStyle}>
+            <div className={`${layoutPreferences.editorStyle}`}>
               <div className="h-[65%]">
                 <MonacoEditor />
               </div>

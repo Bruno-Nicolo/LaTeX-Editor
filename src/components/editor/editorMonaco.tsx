@@ -8,13 +8,26 @@ import {
 } from "./latex-language-Monaco/monaco-commands";
 import { GlobalContext } from "@/context";
 import { defineTokenization } from "./latex-language-Monaco/tokenizer";
-// import { BasicLight } from "./latex-language-Monaco/theme";
+import { themesArray } from "./latex-language-Monaco/theme";
 import { defineAutocompletionProvider } from "./latex-language-Monaco/autocompletion";
 import { defineLinter } from "./latex-language-Monaco/linting";
 
 export function MonacoEditor(props: { className?: string }) {
   const monacoRef = useRef<typeof import("monaco-editor") | null>(null);
   const editorRef = useContext(GlobalContext)?.editorView;
+  // Style Settings
+  const editorStyleSettings = useContext(GlobalContext)?.editorSettings;
+  const theme = editorStyleSettings?.theme.value;
+  const fontSize = editorStyleSettings?.fontSize.value;
+  const fontFamily = editorStyleSettings?.fontFamily.value;
+
+  const defaultText = `% Esempio LaTeX
+\\documentclass{article}
+\\begin{document}
+1234560 => $$\\alpha \\Rightarrow$$
+Ciao, questo è un testo in \\textbf{grassetto}.
+\\end{document}
+`;
 
   const handleBeforeMount = (monaco: typeof import("monaco-editor")) => {
     monacoRef.current = monaco;
@@ -25,20 +38,16 @@ export function MonacoEditor(props: { className?: string }) {
     // Definisci la tokenizzazione (basata su simple-tex.grammar)
     defineTokenization(monaco);
 
-    // Definisci il tema
-    import("monaco-themes/themes/Monokai.json").then((data) => {
-      monaco.editor.defineTheme("monokai", data);
+    // Definisci i temi
+    themesArray.forEach((theme) => {
+      monaco.editor.defineTheme(theme.name, theme.style);
     });
-    // monaco.editor.defineTheme("BasicLight", BasicLight);
 
     // Autocompletion Provider
     defineAutocompletionProvider(monaco);
   };
 
   const handleEditorDidMount: OnMount = (editor, monaco) => {
-    // Theme settings
-    monaco.editor.setTheme("BasicLight");
-
     // Custom commands
     editor.addAction({
       ...boldCommand,
@@ -84,16 +93,13 @@ export function MonacoEditor(props: { className?: string }) {
     <Editor
       className={props.className}
       defaultLanguage="latex"
-      defaultValue={`% Esempio LaTeX
-\\documentclass{article}
-\\begin{document}
-Ciao, questo è un testo in \\textbf{grassetto}.
-\\end{document}
-`}
+      defaultValue={defaultText}
       beforeMount={handleBeforeMount}
       onMount={handleEditorDidMount}
+      theme={theme}
       options={{
-        fontSize: 16,
+        fontSize: fontSize,
+        fontFamily: `var(--font-${fontFamily})`,
         minimap: { enabled: false },
       }}
     />

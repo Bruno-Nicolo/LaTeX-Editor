@@ -13,7 +13,7 @@
 - [ ] Editor (Monaco or Codemirror) & Preview (iframe)
   - [x] Syntax Highlighting
   - [ ] Linting
-  - [ ] Autocomplete
+  - [x] Autocomplete
   - [ ] Wrapping text, not scrolling (horizontally)
   - [x] Bold/Italic/Undeline/Headings/Images keybindings
   - [ ] Themes
@@ -22,22 +22,22 @@
   - [ ] Utility menu: errors, citations, equations (?), ecc.
 - [ ] HomePage
 - [ ] Auth
-- [ ] Settings
+- [x] Settings
 
 ## WEEKLY TODOs
 
 - [x] impostazione Overlap
 - [x] mostra il file-tree per i progetti pinnati
-- [ ] refactor "editorMonaco.tsx", crea moduli separati per Linting, Suggerimenti, Grammatica ecc.
-- [ ] rimuovere file di Codemirror
+- [x] refactor "editorMonaco.tsx", crea moduli separati per Linting, Suggerimenti, Grammatica ecc.
+- [x] rimuovere file di Codemirror
 - [ ] fixare titolo in workbench preview
 - [ ] aggiungi worker
+- [x] temi editor
 - [ ] nascondi pdf e toolbar con schermo piccolo
 - [ ] fix renamingArea component
 
-- [ ] sidebar floating e da mostrare quando passo con il mouse
+- [ ] sidebar floating e da mostrare quando passo con il mouse (controllando coordinate x ?)
 - [ ] tabelle
-- [ ] temi editor
 - [ ] Utility menu: errors, citations, equations (?), ecc.
 
 ### IDEAS:

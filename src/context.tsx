@@ -92,8 +92,8 @@ function getLayoutStyle() {
   const preference = localStorage.getItem("Layout");
   const defaultStyle = {
     modeName: "DynamicSplit",
-    editorStyle: `w-[90%]`,
-    pdfStyle: `w-[90%] absolute left-[90%]`,
+    editorStyle: `w-[80%]`,
+    pdfStyle: `w-[80%] absolute left-[80%]`,
   };
 
   if (preference) return JSON.parse(preference);
@@ -103,14 +103,14 @@ function getLayoutStyle() {
 
 function getFontFamily() {
   const preference = localStorage.getItem("FontFamily");
-  const defaultValue = "Inter";
+  const defaultValue = "mono";
 
   return preference ?? defaultValue;
 }
 
 function getFontSize() {
   const preference = localStorage.getItem("FontSize");
-  const defaultValue = 14;
+  const defaultValue = 16;
 
   if (preference) return parseInt(preference);
 
@@ -119,7 +119,7 @@ function getFontSize() {
 
 function getTheme() {
   const preference = localStorage.getItem("Theme");
-  const defaultValue = "basic-light";
+  const defaultValue = "DreamWeaver";
 
   return preference ?? defaultValue;
 }
