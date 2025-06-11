@@ -16,7 +16,7 @@
   - [x] Autocomplete
   - [ ] Wrapping text, not scrolling (horizontally)
   - [x] Bold/Italic/Undeline/Headings/Images keybindings
-  - [ ] Themes
+  - [x] Themes
   - [x] Undo/Redo Buttons
   - [ ] Vim motions (?)
   - [ ] Utility menu: errors, citations, equations (?), ecc.
@@ -28,25 +28,25 @@
 
 - [x] impostazione Overlap
 - [x] mostra il file-tree per i progetti pinnati
+- [x] icone diverse a seconda dell'estensione del file
 - [x] refactor "editorMonaco.tsx", crea moduli separati per Linting, Suggerimenti, Grammatica ecc.
-- [x] rimuovere file di Codemirror
-- [ ] fixare titolo in workbench preview
-- [ ] aggiungi worker
 - [x] temi editor
-- [ ] nascondi pdf e toolbar con schermo piccolo
+- [x] fixare titolo in workbench preview
+- [x] sidebar floating e da mostrare quando passo con il mouse (controllando coordinate x ?)
+- [ ] aggiungi worker
 - [ ] fix renamingArea component
+- [ ] rimuovere file di Codemirror
 
-- [ ] sidebar floating e da mostrare quando passo con il mouse (controllando coordinate x ?)
 - [ ] tabelle
 - [ ] Utility menu: errors, citations, equations (?), ecc.
 
 ### IDEAS:
 
-- “Create Folder” and “Create File” nel menu con tasto destro sulle cartelle
-- resizable Items
 - cambia i valori delle spellcheck languages tranducendoli
 - change headings to Section, subsection, chapter, ecc.
 - Upload file button
+- resizable Items
+- Toast con messaggio "Compiling..." o con "Some errors occurred!" o con "File added!", "File Renamed!", ...
 - Aggiungere tooltip in giro
 
 componente workbench separato

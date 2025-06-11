@@ -4,7 +4,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 
-import { NavContextMenu } from "./nav-context-menu";
+import { NavDropDown } from "./nav-dropdown";
 
 import {
   SidebarMenu,
@@ -15,9 +15,6 @@ import {
 
 import {
   Bookmark,
-  FilePlus,
-  FolderPlus,
-  Upload,
   BookOpen,
   ChevronRight,
   File,
@@ -32,7 +29,7 @@ import {
   SidebarGroupLabel,
 } from "./ui/sidebar";
 import { Separator } from "./ui/separator";
-import { CreationDialog } from "./nav-dialogs";
+import { CreationDialog, UploadFileDialog } from "./nav-dialogs";
 import { RenamingArea } from "./ui/renaming-area";
 
 import {
@@ -44,10 +41,10 @@ import {
 } from "@/components/ui/dialog";
 import { type ReactNode } from "react";
 import { Button } from "./ui/button";
+import { MonacoEditor } from "./editor/editorMonaco";
 
 // REMOVE
 import { ACTIVEPROJECTID, getFilePath, MOCKFOLDERS, type file } from "@/temp";
-import { MonacoEditor } from "./editor/editorMonaco";
 
 export function Workbench() {
   const pinnedResources = MOCKFOLDERS.filter((item) => item.workbench == true);
@@ -61,7 +58,7 @@ export function Workbench() {
             <Bookmark />
             Workbench
           </SidebarGroupLabel>
-          <SidebarGroupContent className="overflow-y-auto">
+          <SidebarGroupContent className="overflow-y-auto  overflow-x-hidden">
             <FileTree data={pinnedResources} isWorkbenchSection={true} />
           </SidebarGroupContent>
         </SidebarGroup>
@@ -83,11 +80,11 @@ function WorkbenchPreview(props: { children: ReactNode; item: file }) {
           >
             <Maximize2 />
           </Button>
-          <DialogTitle className="truncate mr-8 pb-4">
+          <DialogTitle className="truncate mr-8 pb-2">
             <span>{getFilePath(props.item)}</span>
           </DialogTitle>
-          <Separator className="my-2" />
         </DialogHeader>
+        <Separator className="mb-2" />
         {/* Mostra l'editor solo con file LaTeX */}
         {props.item.name.includes(".tex") ||
         props.item.name.includes(".bib") ? (
@@ -110,16 +107,12 @@ export function MainNav() {
       {/* Group heading */}
       <SidebarGroupLabel className="gap-2">
         <span className="flex-grow">Files</span>
-        <CreationDialog type="file">
-          <FilePlus className="cursor-pointer" />
-        </CreationDialog>
-        <CreationDialog type="folder">
-          <FolderPlus className="cursor-pointer" />
-        </CreationDialog>
-        <Upload className="cursor-pointer" />
+        <CreationDialog type="file" />
+        <CreationDialog type="folder" />
+        <UploadFileDialog />
       </SidebarGroupLabel>
       {/* Content */}
-      <SidebarGroupContent className="overflow-y-auto">
+      <SidebarGroupContent className="overflow-y-auto overflow-x-hidden">
         <FileTree data={activeResources} />
       </SidebarGroupContent>
     </SidebarGroup>
@@ -143,42 +136,36 @@ export function FileTree(props: {
   );
 }
 
+function FileIcon(props: { itemName: string }) {
+  return props.itemName.includes(".bib") ? (
+    <LibraryBig />
+  ) : props.itemName.includes(".png") || props.itemName.includes(".jpg") ? (
+    <Image />
+  ) : (
+    <File />
+  );
+}
+
 export function NavItem(props: { item: file; isWorkbenchSection?: boolean }) {
   if (props.item.type === "file") {
     return (
       <SidebarMenuItem>
-        <NavContextMenu item={props.item}>
-          {props.isWorkbenchSection != undefined &&
-          props.isWorkbenchSection == true ? (
-            <WorkbenchPreview item={props.item}>
-              <SidebarMenuButton className="truncate" tooltip={props.item.name}>
-                {props.item.name.includes(".bib") ? (
-                  <LibraryBig />
-                ) : props.item.name.includes(".png") ||
-                  props.item.name.includes(".jpg") ? (
-                  <Image />
-                ) : (
-                  <File />
-                )}
-                <RenamingArea id={props.item.id}>
-                  {props.item.name}
-                </RenamingArea>
-              </SidebarMenuButton>
-            </WorkbenchPreview>
-          ) : (
-            <SidebarMenuButton className="truncate" tooltip={props.item.name}>
-              {props.item.name.includes(".bib") ? (
-                <LibraryBig />
-              ) : props.item.name.includes(".png") ||
-                props.item.name.includes(".jpg") ? (
-                <Image />
-              ) : (
-                <File />
-              )}
+        {props.isWorkbenchSection == true ? (
+          <WorkbenchPreview item={props.item}>
+            <SidebarMenuButton tooltip={props.item.name}>
+              <FileIcon itemName={props.item.name} />
               <RenamingArea id={props.item.id}>{props.item.name}</RenamingArea>
             </SidebarMenuButton>
-          )}
-        </NavContextMenu>
+          </WorkbenchPreview>
+        ) : (
+          <SidebarMenuButton tooltip={props.item.name} asChild>
+            <a href="#">
+              <FileIcon itemName={props.item.name} />
+              <RenamingArea id={props.item.id}>{props.item.name}</RenamingArea>
+            </a>
+          </SidebarMenuButton>
+        )}
+        <NavDropDown item={props.item} />
       </SidebarMenuItem>
     );
   }
@@ -187,21 +174,20 @@ export function NavItem(props: { item: file; isWorkbenchSection?: boolean }) {
   return (
     <SidebarMenuItem>
       <Collapsible className="group/collapsible" defaultOpen={true}>
-        <NavContextMenu item={props.item}>
-          <CollapsibleTrigger
-            asChild
-            defaultChecked={props.isWorkbenchSection ?? true}
-          >
-            <SidebarMenuButton tooltip={props.item.name} className="truncate ">
-              <ChevronRight className="toggle" />
-              {props.item.type === "folder" ? <Folder /> : <BookOpen />}
-              <RenamingArea id={props.item.id}>{props.item.name}</RenamingArea>
-            </SidebarMenuButton>
-          </CollapsibleTrigger>
-        </NavContextMenu>
+        <CollapsibleTrigger
+          asChild
+          defaultChecked={props.isWorkbenchSection ?? true}
+        >
+          <SidebarMenuButton tooltip={props.item.name} className="truncate ">
+            <ChevronRight className="toggle" />
+            {props.item.type === "folder" ? <Folder /> : <BookOpen />}
+            <RenamingArea id={props.item.id}>{props.item.name}</RenamingArea>
+            <NavDropDown item={props.item} />
+          </SidebarMenuButton>
+        </CollapsibleTrigger>
         {subItems.length ? (
           <CollapsibleContent>
-            <SidebarMenuSub>
+            <SidebarMenuSub className="mr-0 pr-0.5">
               {subItems.map((subItem) => (
                 <NavItem item={subItem} key={subItem.id} />
               ))}

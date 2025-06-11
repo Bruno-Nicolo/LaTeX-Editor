@@ -154,7 +154,7 @@ function HeadingsPopover(props: { children: ReactNode }) {
   return (
     <Popover>
       <PopoverTrigger>{props.children}</PopoverTrigger>
-      <PopoverContent className="max-w-60">
+      <PopoverContent className="max-w-52" side="bottom" align="center">
         <Button className="text-2xl w-full" variant={"ghost"}>
           Heading 1
         </Button>
@@ -176,7 +176,7 @@ function ImagePopover(props: { children: ReactNode }) {
   return (
     <Popover>
       <PopoverTrigger>{props.children}</PopoverTrigger>
-      <PopoverContent className="max-w-48">
+      <PopoverContent className="max-w-48" side="bottom" align="center">
         <ToolbarButton modiferMethod={placeImageCenter}>Center</ToolbarButton>
         <ToolbarButton modiferMethod={placeImageLeft}>Left</ToolbarButton>
         <ToolbarButton modiferMethod={placeImageRight}>Right</ToolbarButton>

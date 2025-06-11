@@ -7,17 +7,16 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import type { ReactNode } from "react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import { CloudUpload, FilePlus, FolderPlus, Upload } from "lucide-react";
 
-export function CreationDialog(props: {
-  children: ReactNode;
-  type: "folder" | "file";
-}) {
+export function CreationDialog(props: { type: "folder" | "file" }) {
   return (
     <Dialog>
-      <DialogTrigger asChild>{props.children}</DialogTrigger>
+      <DialogTrigger asChild className="cursor-pointer">
+        {props.type === "file" ? <FilePlus /> : <FolderPlus />}
+      </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Create new {props.type}</DialogTitle>
@@ -30,6 +29,31 @@ export function CreationDialog(props: {
           type="text"
           defaultValue={props.type == "file" ? "name.tex" : ""}
         />
+        <DialogFooter>
+          <Button type="submit">Save changes</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+export function UploadFileDialog() {
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Upload className="cursor-pointer" />
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-2xl">
+        {/* Drop area */}
+        <div id="fileInput">
+          <CloudUpload />
+          <DialogTitle>Upload a File</DialogTitle>
+          <DialogDescription>
+            Click to browse, or drag & drop a file here
+          </DialogDescription>
+        </div>
+        <input type="file" name="fileInput" className="hidden" />
+
         <DialogFooter>
           <Button type="submit">Save changes</Button>
         </DialogFooter>
