@@ -19,32 +19,77 @@
   - [x] Themes
   - [x] Undo/Redo Buttons
   - [ ] Vim motions (?)
-  - [ ] Utility menu: errors, citations, equations (?), ecc.
+  - [ ] Support Pane: errors, citations, equations (?), ecc.
 - [ ] HomePage
 - [ ] Auth
 - [x] Settings
 
+## Priority List
+
+**LEVEL 1**
+
+- [x] sidebar floating on hover
+
+**LEVEL 2**
+
+- [ ] rimuovere workbench in file tree
+- [ ] "set as main file" in file .tex (icona stella + badge)
+- [ ] rimuovere opzioni in workbench -> icona pin al posto dei 3 puntini
+
+**LEVEL 3**
+
+- [ ] file con stringhe
+
+**LEVEL 4**
+
+- [ ] embed https://www.latex-tables.com/ in una modale
+
+**LEVEL 5**
+
+- [ ] font size: normal, small, footnote size, ...
+- [ ] colore testo
+- [ ] commenti
+- [ ] change headings to Section, subsection, subsubsection, paragraph
+
+**LEVEL 6**
+
+- [ ] support pane
+  - [ ] math
+  - [ ] errori, warning
+  - [ ] file content
+  - [ ] floating e pinnato
+
+**LEVEL 7**
+
+- [ ] home
+  - [ ] tasto "clone repo"
+  - [ ] aggiungi al workbench
+  - [ ] permessi/invita
+
+**LEVEL 8**
+
+- [ ] Auth
+
 ## WEEKLY TODOs
 
-- [x] impostazione Overlap
-- [x] mostra il file-tree per i progetti pinnati
-- [x] icone diverse a seconda dell'estensione del file
-- [x] refactor "editorMonaco.tsx", crea moduli separati per Linting, Suggerimenti, Grammatica ecc.
-- [x] temi editor
-- [x] fixare titolo in workbench preview
-- [x] sidebar floating e da mostrare quando passo con il mouse (controllando coordinate x ?)
+- [x] cambia i valori delle spellcheck languages tranducendoli
+- [ ] Upload file button
+
+- [x] sidebar floating on hover
+
+- [ ] Creare componente separato workbench.tsx
+- [ ] rimuovere "workbench" in file tree
+- [ ] "set as main file" in file .tex (icona stella + badge)
+- [ ] rimuovere opzioni in workbench -> icona pin al posto dei 3 puntini
+
 - [ ] aggiungi worker
 - [ ] fix renamingArea component
-- [ ] rimuovere file di Codemirror
 
 - [ ] tabelle
-- [ ] Utility menu: errors, citations, equations (?), ecc.
+- [ ] Utility menu: errors, citations, equations, ecc.
 
 ### IDEAS:
 
-- cambia i valori delle spellcheck languages tranducendoli
-- change headings to Section, subsection, chapter, ecc.
-- Upload file button
 - resizable Items
 - Toast con messaggio "Compiling..." o con "Some errors occurred!" o con "File added!", "File Renamed!", ...
 - Aggiungere tooltip in giro
