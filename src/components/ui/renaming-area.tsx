@@ -1,54 +1,68 @@
 import { GlobalContext } from "@/context";
-import React, { useContext, useEffect } from "react";
+import { ACTIVEPROJECTID } from "@/temp";
+import React, {
+  useContext,
+  useEffect,
+  type FormEvent,
+  type MouseEvent,
+} from "react";
 
-export function RenamingArea(props: {
-  id: number;
-  children: string;
-  className?: string;
-}) {
+export function RenamingArea(props: { id: number; children: string }) {
   const { editedItemId, setEditedItemId } = useContext(GlobalContext)!;
   const [newName, setName] = React.useState(props.children);
-  const ACTIVEPROJID = 12;
 
   useEffect(() => {
-    if (editedItemId === props.id) {
-      const input = document.getElementsByName("renameFileInput")[0];
+    const input = document.getElementById("renamedItem");
 
-      if (input != undefined) {
-        input.focus();
-      }
+    setTimeout(() => {
+      input?.focus();
+    }, 200);
+
+    input?.addEventListener("focusout", (event) => {
+      event.preventDefault();
+      // Salva le modifiche
+      setEditedItemId(-1);
+    });
+  }, [editedItemId, setEditedItemId]);
+
+  const handleSubmit = (event: FormEvent) => {
+    event.preventDefault();
+    // Salva le modifiche
+    setEditedItemId(-1);
+  };
+
+  const handleDoubleClick = (event: MouseEvent) => {
+    if (props.id === ACTIVEPROJECTID) {
+      event.preventDefault();
+      setEditedItemId(props.id);
     }
-  }, [editedItemId, props.id]);
+  };
 
   if (editedItemId === props.id) {
     return (
-      <form action="/foo" method="post">
-        <input
-          name="renameFileInput"
-          defaultValue={newName}
-          onClick={(e) => e.stopPropagation()}
-          onChange={(element) => setName(element.target.value)}
-          type="text"
-          className={`w-full outline-none ${props.className}`}
-        />
-
-        <input
-          type="submit"
-          className="hidden"
-          onSubmit={() => setEditedItemId(-1)}
-        />
-      </form>
+      <span>
+        <form onSubmit={handleSubmit}>
+          <input
+            autoFocus
+            type="text"
+            id="renamedItem"
+            className={`w-full outline-none ${
+              props.id === ACTIVEPROJECTID && "font-semibold"
+            }`}
+            value={newName}
+            onChange={(event) => {
+              setName(event.target.value);
+            }}
+          />
+          <input type="submit" className="hidden" />
+        </form>
+      </span>
     );
   }
-
   return (
     <span
-      onDoubleClick={() => {
-        if (props.id == ACTIVEPROJID) {
-          setEditedItemId(props.id);
-        }
-      }}
-      className={`truncate ${props.className}`}
+      className={`truncate ${props.id === ACTIVEPROJECTID && "font-semibold"}`}
+      onDoubleClick={handleDoubleClick}
     >
       {newName}
     </span>

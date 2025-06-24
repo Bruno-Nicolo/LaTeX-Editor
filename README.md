@@ -32,9 +32,9 @@
 
 **LEVEL 2**
 
-- [ ] rimuovere workbench in file tree
+- [x] rimuovere "workbench" in file tree
 - [ ] "set as main file" in file .tex (icona stella + badge)
-- [ ] rimuovere opzioni in workbench -> icona pin al posto dei 3 puntini
+- [x] rimuovere opzioni in workbench -> icona pin al posto dei 3 puntini
 
 **LEVEL 3**
 
@@ -72,26 +72,27 @@
 
 ## WEEKLY TODOs
 
+- stato globale per main editor e stato per "preview-only editor"
+
 - [x] cambia i valori delle spellcheck languages tranducendoli
-- [ ] Upload file button
+- [x] Upload file button
 
 - [x] sidebar floating on hover
 
-- [ ] Creare componente separato workbench.tsx
-- [ ] rimuovere "workbench" in file tree
+- [x] Creare componente separato workbench.tsx
+- [x] rimuovere "workbench" in file tree
 - [ ] "set as main file" in file .tex (icona stella + badge)
-- [ ] rimuovere opzioni in workbench -> icona pin al posto dei 3 puntini
+- [x] rimuovere opzioni in workbench -> icona pin al posto dei 3 puntini
 
-- [ ] aggiungi worker
-- [ ] fix renamingArea component
+- [x] fix renamingArea component
+- [ ] Linting dal progetto del prof
 
 - [ ] tabelle
 - [ ] Utility menu: errors, citations, equations, ecc.
+- [ ] aggiungi worker
 
 ### IDEAS:
 
 - resizable Items
 - Toast con messaggio "Compiling..." o con "Some errors occurred!" o con "File added!", "File Renamed!", ...
 - Aggiungere tooltip in giro
-
-componente workbench separato

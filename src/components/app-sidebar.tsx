@@ -10,13 +10,14 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { MainNav, Workbench } from "./nav-sections";
+import { MainNav } from "./main-nav";
 import { RenamingArea } from "./ui/renaming-area";
+import { Workbench } from "./workbench";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   // placeholder da rimuovere!
   const projectName = "Project Name very very very long";
-  const projectId = 12;
+  const projectId = 1;
 
   return (
     <Sidebar
@@ -32,9 +33,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   <BookOpen className="size-4" />
                 </div>
                 {/* Name */}
-                <RenamingArea id={projectId} className="font-semibold">
-                  {projectName}
-                </RenamingArea>
+                <RenamingArea id={projectId}>{projectName}</RenamingArea>
               </div>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -44,7 +43,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         <MainNav />
       </SidebarContent>
-      <SidebarFooter>
+      <SidebarFooter className=" m-0 p-0 ">
         <Workbench />
       </SidebarFooter>
     </Sidebar>

@@ -136,16 +136,16 @@ function ThemeSelector() {
 
 function LanguageSelector() {
   const availableLanguages = [
-    "Spagnolo",
-    "Italiano",
-    "Inglese",
+    "Spanish",
+    "Italian",
+    "English",
     "Hindi",
-    "Arabo",
-    "Bengalese",
-    "Cinese Mandarino",
-    "Portoghese",
-    "Russo",
-    "Giapponese",
+    "Arabic",
+    "Bengali",
+    "Mandarin Chinese",
+    "Portuguese",
+    "Russian",
+    "Japanese",
   ].sort();
 
   const { editorSettings } = useContext(GlobalContext)!;

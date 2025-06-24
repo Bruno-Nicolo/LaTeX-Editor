@@ -10,6 +10,7 @@ import {
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { CloudUpload, FilePlus, FolderPlus, Upload } from "lucide-react";
+import { useState, type DragEvent } from "react";
 
 export function CreationDialog(props: { type: "folder" | "file" }) {
   return (
@@ -38,6 +39,54 @@ export function CreationDialog(props: { type: "folder" | "file" }) {
 }
 
 export function UploadFileDialog() {
+  const [fileName, setFileName] = useState("");
+  const [filePath, setFilePath] = useState("#");
+
+  const handleDrop = (event: DragEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    document.getElementById("dropArea")!.style.backgroundColor = "";
+    const file = event.dataTransfer!.files[0];
+    showImagePreview(file);
+  };
+
+  const showImagePreview = (file: File) => {
+    // Mostra l'anteprima solo se è un tipo di file immagine
+    if (file.type.startsWith("image/")) {
+      setFileName(file.name);
+      const reader = new FileReader();
+
+      reader.onload = (event: ProgressEvent<FileReader>) => {
+        // Quando il lettore ha finito di leggere il file
+        setFilePath(event.target!.result!.toString());
+      };
+
+      reader.onerror = (error) => {
+        console.error("Errore while reading file:", error);
+        setFilePath("#");
+      };
+
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const onDragEnter = (event: DragEvent) => {
+    event.stopPropagation();
+    event.preventDefault();
+  };
+
+  const onDragOver = (event: DragEvent) => {
+    event.stopPropagation();
+    document.getElementById("dropArea")!.style.backgroundColor =
+      "var(--secondary)";
+    event.preventDefault();
+  };
+
+  const openFileExplorer = () => {
+    document.getElementById("fileInput")!.click();
+  };
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -45,16 +94,65 @@ export function UploadFileDialog() {
       </DialogTrigger>
       <DialogContent className="sm:max-w-2xl">
         {/* Drop area */}
-        <div id="fileInput">
-          <CloudUpload />
-          <DialogTitle>Upload a File</DialogTitle>
-          <DialogDescription>
-            Click to browse, or drag & drop a file here
-          </DialogDescription>
+        <div
+          id="dropArea"
+          onDragEnter={onDragEnter}
+          onDragOver={onDragOver}
+          onDrop={handleDrop}
+        >
+          {fileName == "" ? (
+            <>
+              <CloudUpload />
+              <DialogTitle>Upload a File</DialogTitle>
+              <DialogDescription>
+                Click to{" "}
+                <span
+                  className="font-bold underline cursor-pointer"
+                  onClick={openFileExplorer}
+                >
+                  browse
+                </span>
+                , or drag & drop a file here
+              </DialogDescription>
+            </>
+          ) : (
+            <>
+              <DialogTitle className="max-w-lg truncate">
+                {fileName}
+              </DialogTitle>
+              <img id="image-preview" src={filePath} alt="Preview" />
+            </>
+          )}
         </div>
-        <input type="file" name="fileInput" className="hidden" />
+
+        {/* hidden input */}
+        <input
+          type="file"
+          name="fileInput"
+          id="fileInput"
+          className="hidden"
+          accept="image/*"
+          onChange={(event) => {
+            event.preventDefault();
+
+            const file = event.target!.files![0];
+            showImagePreview(file);
+          }}
+        />
 
         <DialogFooter>
+          {fileName !== "" && (
+            // Reset Button
+            <Button
+              variant={"outline"}
+              onClick={() => {
+                setFilePath("#");
+                setFileName("");
+              }}
+            >
+              Clear
+            </Button>
+          )}
           <Button type="submit">Save changes</Button>
         </DialogFooter>
       </DialogContent>

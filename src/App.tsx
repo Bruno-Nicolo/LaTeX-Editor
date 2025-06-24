@@ -31,6 +31,28 @@ export default function App() {
     }
   };
 
+  const handleOnHoverIn = () => {
+    if (!isSidebarOpen) {
+      setSidebarFloating(true);
+      setSidebarOpen(true);
+    }
+  };
+
+  const handleOnHoverOut = () => {
+    if (isSidebarOpen && isSidebarFloating) {
+      setSidebarOpen(false);
+      setTimeout(() => {
+        setSidebarFloating(false);
+      }, 100);
+    }
+  };
+
+  const handleClickSidebarTrigger = () => {
+    if (isSidebarFloating) {
+      setSidebarFloating(false);
+    } else setSidebarOpen(!isSidebarOpen);
+  };
+
   return (
     <div className="[--header-height:calc(theme(spacing.16))]">
       <SidebarProvider
@@ -42,11 +64,9 @@ export default function App() {
           {/* Sidebar Trigger */}
           <Button
             className="h-8 w-8"
-            onClick={() => {
-              if (isSidebarFloating) {
-                setSidebarFloating(false);
-              } else setSidebarOpen(!isSidebarOpen);
-            }}
+            onMouseEnter={handleOnHoverIn}
+            onMouseLeave={handleOnHoverOut}
+            onClick={handleClickSidebarTrigger}
             variant="ghost"
             size="icon"
           >

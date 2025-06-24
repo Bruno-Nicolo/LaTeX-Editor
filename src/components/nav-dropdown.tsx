@@ -10,7 +10,7 @@ import {
 import { GlobalContext } from "@/context";
 import { SidebarMenuAction } from "./ui/sidebar";
 import {
-  Bookmark,
+  Crown,
   FilePlus,
   FolderPlus,
   MoreHorizontal,
@@ -48,20 +48,17 @@ export function NavDropDown(props: { item: file }) {
           </>
         )}
         {/* RENAMING */}
-        <DropdownMenuItem
-          onClick={(e) => {
-            renameItem();
-            e.stopPropagation();
-          }}
-        >
+        <DropdownMenuItem onClick={renameItem}>
           <Pencil />
           <span>Rename</span>
         </DropdownMenuItem>
-        {/* ADD TO WORKBENCH */}
-        <DropdownMenuCheckboxItem checked={props.item.workbench}>
-          <Bookmark className="text-muted-foreground" />
-          <span>Workbench</span>
-        </DropdownMenuCheckboxItem>
+        {/* SET AS MAIN FILE */}
+        {props.item.type === "file" && (
+          <DropdownMenuCheckboxItem checked={props.item.workbench}>
+            <Crown className="text-muted-foreground" />
+            <span>Set as Main</span>
+          </DropdownMenuCheckboxItem>
+        )}
         {/* DELETE */}
         <DropdownMenuItem>
           <Trash2 />

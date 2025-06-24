@@ -1,4 +1,4 @@
-*[data-state="open"] .toggle {
+*[data-state="open"] > .toggle {
   transform: rotate(90deg);
 }
 
@@ -16,7 +16,7 @@
   transition-timing-function: linear;
 }
 
-#fileInput {
+#dropArea {
   width: 100%;
   height: 20em;
   border: 2px dotted var(--color-muted-foreground);
@@ -29,8 +29,16 @@
   color: var(--color-muted-foreground);
 }
 
-#fileInput h2 {
+#dropArea h2 {
   margin-top: 0.5em;
   color: var(--color-foreground);
   font-size: 1.2em;
+}
+
+#image-preview {
+  padding: 1em;
+  max-width: 32em;
+  max-height: 16em;
+  object-fit: cover;
+  border-radius: 0.25em;
 }
