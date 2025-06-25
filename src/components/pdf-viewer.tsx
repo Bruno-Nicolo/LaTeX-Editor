@@ -1,8 +1,8 @@
-export function PdfViewer(props: { style: string; layoutMode: string }) {
+export function PdfViewer(props: { layoutMode: string }) {
   return (
     <iframe
       src="prova.html"
-      className={`${props.style} h-full`}
+      className={`w-full h-full`}
       title="Pdf Preview"
       onMouseEnter={() => {
         const iframe = document.querySelector("iframe");

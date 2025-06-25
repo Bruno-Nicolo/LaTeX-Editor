@@ -4,11 +4,17 @@ import { AppSidebar } from "./components/app-sidebar";
 import { SiteHeader } from "./components/site-header";
 import { SidebarInset, SidebarProvider } from "./components/ui/sidebar";
 import { Button } from "./components/ui/button";
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { GlobalContext } from "./context";
 import { PdfViewer } from "./components/pdf-viewer";
-import { MonacoEditor } from "./components/editor/editorMonaco";
-import { ChevronDown, SidebarIcon } from "lucide-react";
+import { PanelBottom, SidebarIcon } from "lucide-react";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "./components/ui/resizable";
+import type { ImperativePanelHandle } from "react-resizable-panels";
+import { EditorSection } from "./components/editor-section";
 
 export default function App() {
   const { editorSettings } = useContext(GlobalContext)!;
@@ -53,6 +59,17 @@ export default function App() {
     } else setSidebarOpen(!isSidebarOpen);
   };
 
+  const ref = useRef<ImperativePanelHandle>(null);
+
+  const TogglePanel = () => {
+    const panel = ref.current;
+    if (panel && !panel.isCollapsed()) {
+      panel.collapse();
+    } else if (panel && panel.isCollapsed()) {
+      panel.resize(35);
+    }
+  };
+
   return (
     <div className="[--header-height:calc(theme(spacing.16))]">
       <SidebarProvider
@@ -72,6 +89,16 @@ export default function App() {
           >
             <SidebarIcon />
           </Button>
+
+          {/* Drawer Trigger */}
+          <Button
+            className="h-8 w-8"
+            variant="ghost"
+            size="icon"
+            onClick={TogglePanel}
+          >
+            <PanelBottom />
+          </Button>
         </SiteHeader>
         <div className="flex h-[calc(100svh-var(--header-height)-3rem)]!">
           <AppSidebar variant={isSidebarFloating ? "floating" : "sidebar"} />
@@ -79,23 +106,29 @@ export default function App() {
             className="flex flex-row overflow-x-hidden"
             onMouseMove={toggleFloatingSidebar}
           >
-            {/* Editor */}
-            <div className={`${layoutPreferences.editorStyle}`}>
-              <div className="h-[65%]">
-                <MonacoEditor />
-              </div>
-              {/* Utility Menu */}
-              <div className="bg-secondary h-[35%] w-full">
-                <div className="h-8 bg-secondary-foreground flex items-center text-secondary p-4">
-                  <ChevronDown />
+            {layoutPreferences.modeName == "HalfSplit" ? (
+              <ResizablePanelGroup direction="horizontal">
+                <ResizablePanel defaultSize={50}>
+                  <EditorSection drawerRef={ref} drawerToggle={TogglePanel} />
+                </ResizablePanel>
+
+                <ResizableHandle />
+
+                <ResizablePanel defaultSize={50}>
+                  <PdfViewer layoutMode={layoutPreferences.modeName} />
+                </ResizablePanel>
+              </ResizablePanelGroup>
+            ) : (
+              <>
+                <div className={`${layoutPreferences.editorStyle}`}>
+                  <EditorSection drawerRef={ref} drawerToggle={TogglePanel} />
                 </div>
-              </div>
-            </div>
-            {/* PDF Viewer */}
-            <PdfViewer
-              style={layoutPreferences.pdfStyle}
-              layoutMode={layoutPreferences.modeName}
-            />
+
+                <div className={`${layoutPreferences.pdfStyle} h-full`}>
+                  <PdfViewer layoutMode={layoutPreferences.modeName} />
+                </div>
+              </>
+            )}
           </SidebarInset>
         </div>
         <CompileButton />

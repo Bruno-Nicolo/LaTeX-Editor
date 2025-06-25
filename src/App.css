@@ -42,3 +42,7 @@
   object-fit: cover;
   border-radius: 0.25em;
 }
+
+button {
+  cursor: pointer;
+}
