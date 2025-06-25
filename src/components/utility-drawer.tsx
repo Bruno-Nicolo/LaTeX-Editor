@@ -21,7 +21,7 @@ export default function UtilityDrawer(props: { onClick: () => void }) {
                 onClick={updateTab}
                 className={`${
                   currentTab == tab ? "font-bold" : "text-muted-tabs"
-                } py-2 `}
+                } py-2`}
               >
                 {tab}
               </button>
@@ -29,7 +29,7 @@ export default function UtilityDrawer(props: { onClick: () => void }) {
           })}
         </div>
         <button onClick={props.onClick}>
-          <X />
+          <X size={20} />
         </button>
       </div>
 

@@ -108,13 +108,13 @@ export default function App() {
           >
             {layoutPreferences.modeName == "HalfSplit" ? (
               <ResizablePanelGroup direction="horizontal">
-                <ResizablePanel defaultSize={50}>
+                <ResizablePanel defaultSize={50} minSize={10}>
                   <EditorSection drawerRef={ref} drawerToggle={TogglePanel} />
                 </ResizablePanel>
 
                 <ResizableHandle />
 
-                <ResizablePanel defaultSize={50}>
+                <ResizablePanel defaultSize={50} minSize={10}>
                   <PdfViewer layoutMode={layoutPreferences.modeName} />
                 </ResizablePanel>
               </ResizablePanelGroup>

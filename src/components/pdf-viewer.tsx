@@ -2,7 +2,9 @@ export function PdfViewer(props: { layoutMode: string }) {
   return (
     <iframe
       src="prova.html"
-      className={`w-full h-full`}
+      className={`w-full h-full ${
+        props.layoutMode == "Overlap" ? "absolute" : ""
+      }`}
       title="Pdf Preview"
       onMouseEnter={() => {
         const iframe = document.querySelector("iframe");
@@ -10,6 +12,7 @@ export function PdfViewer(props: { layoutMode: string }) {
           iframe?.classList.remove("closingAnimation");
           iframe?.classList.add("openingAnimation");
         } else if (props.layoutMode == "Overlap") {
+          console.log("MOSTRA");
           iframe?.classList.remove("z-1");
           iframe?.classList.add("z-[100]");
         }
@@ -20,6 +23,7 @@ export function PdfViewer(props: { layoutMode: string }) {
           iframe?.classList.remove("openingAnimation");
           iframe?.classList.add("closingAnimation");
         } else if (props.layoutMode == "Overlap") {
+          console.log("NASCONDI");
           iframe?.classList.remove("z-[100]");
           iframe?.classList.add("z-1");
         }

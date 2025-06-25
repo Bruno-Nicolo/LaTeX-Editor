@@ -302,7 +302,7 @@ function getLayoutSettingsFromName(name: string) {
   } else if (name == "Overlap") {
     return {
       modeName: name,
-      editorStyle: `absolute left-0 w-[80%] z-[10]`,
+      editorStyle: `w-[80%] z-[10]`,
       pdfStyle: `w-[80%] absolute right-0`,
     };
   } else {
