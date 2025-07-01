@@ -16,6 +16,7 @@ import {
   BookOpen,
   ChevronRight,
   File,
+  FileBadge,
   Folder,
   Frown,
   Image,
@@ -67,9 +68,6 @@ export function Workbench() {
   );
 }
 
-// 1. Controlla che l'item non sia un file
-// 1. Se non è un file -> icona, nome, pin quando passo + ricorsione  |  file -> icona, nome, pin quando passo
-
 function WorkbenchTree(props: { data: file[] }) {
   return props.data.map((item) => {
     if (item.type !== "file") {
@@ -96,6 +94,8 @@ function FileIcon(props: { data: file }) {
     <LibraryBig />
   ) : props.data.name.includes(".png") || props.data.name.includes(".jpg") ? (
     <Image />
+  ) : props.data.isMain ? (
+    <FileBadge />
   ) : (
     <File />
   );
@@ -148,13 +148,6 @@ function WorkbenchItem(props: { data: file }) {
     </>
   );
 }
-
-// MAIN TREE:
-// File -> icona, nome, stella/badge (se main), menu 3 puntini
-
-// WORKBENCH:
-// Solo progetti, no menu 3 puntini, solo icona "pin" quando passo (?)
-// Limite a 5 progetti nel workbench?
 
 function WorkbenchDialog(props: {
   children: ReactNode;

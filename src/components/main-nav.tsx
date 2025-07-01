@@ -20,6 +20,7 @@ import {
   Folder,
   LibraryBig,
   Image,
+  FileBadge,
 } from "lucide-react";
 import {
   SidebarGroup,
@@ -64,11 +65,13 @@ export function FileTree(props: { data: file[] }) {
   );
 }
 
-function GetIcon(props: { itemName: string }) {
-  return props.itemName.includes(".bib") ? (
+function GetIcon(props: { item: file }) {
+  return props.item.name.includes(".bib") ? (
     <LibraryBig />
-  ) : props.itemName.includes(".png") || props.itemName.includes(".jpg") ? (
+  ) : props.item.name.includes(".png") || props.item.name.includes(".jpg") ? (
     <Image />
+  ) : props.item.isMain ? (
+    <FileBadge />
   ) : (
     <File />
   );
@@ -80,7 +83,7 @@ export function NavItem(props: { item: file }) {
       <SidebarMenuItem>
         <SidebarMenuButton tooltip={props.item.name} asChild>
           <a href="#">
-            <GetIcon itemName={props.item.name} />
+            <GetIcon item={props.item} />
             <RenamingArea id={props.item.id}>{props.item.name}</RenamingArea>
             <NavDropDown item={props.item} />
           </a>

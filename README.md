@@ -33,7 +33,7 @@
 **LEVEL 2**
 
 - [x] rimuovere "workbench" in file tree
-- [ ] "set as main file" in file .tex (icona stella + badge)
+- [x] "set as main file" in file .tex (icona stella + badge)
 - [x] rimuovere opzioni in workbench -> icona pin al posto dei 3 puntini
 
 **LEVEL 3**
@@ -81,18 +81,38 @@
 
 - [x] Creare componente separato workbench.tsx
 - [x] rimuovere "workbench" in file tree
-- [ ] "set as main file" in file .tex (icona stella + badge)
 - [x] rimuovere opzioni in workbench -> icona pin al posto dei 3 puntini
-
 - [x] fix renamingArea component
+- [x] resizable Items
+
+- [x] "set as main file" in file .tex (icona stella + badge)
 - [ ] Linting dal progetto del prof
 
 - [ ] tabelle
-- [ ] Utility menu: errors, citations, equations, ecc.
+- [x] Utility menu: errors, citations, equations, ecc.
 - [ ] aggiungi worker
+
+##############################################################
+
+valore URL +".bib" ritrna il codice da copiare
+titolo, autori, venue, data (ragguppti), pallino colorato a seconda del tipo
+param 0 = condensato
+param 1 = standard
+param 2 = cross-ref
+
+- [ ] change remote origin git
+- [x] Citation tool
+
+  - [x] copia il risultato su clipboard
+  - [x] toast con "copied to clipboard"
+
+  API con google scholar (?)
+
+- [ ] editor tabs
+- [ ] Equation tool
+- [ ] Tables tool
 
 ### IDEAS:
 
-- resizable Items
 - Toast con messaggio "Compiling..." o con "Some errors occurred!" o con "File added!", "File Renamed!", ...
 - Aggiungere tooltip in giro

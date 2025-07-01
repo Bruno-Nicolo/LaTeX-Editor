@@ -110,7 +110,7 @@ function getFontFamily() {
 
 function getFontSize() {
   const preference = localStorage.getItem("FontSize");
-  const defaultValue = 16;
+  const defaultValue = 14;
 
   if (preference) return parseInt(preference);
 

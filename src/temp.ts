@@ -5,6 +5,7 @@ export type file = {
   type: "folder" | "file" | "project";
   workbench: boolean;
   isActive: boolean;
+  isMain: boolean;
 };
 
 export const MOCKFOLDERS: file[] = [
@@ -16,6 +17,7 @@ export const MOCKFOLDERS: file[] = [
     type: "project",
     workbench: false,
     isActive: true,
+    isMain: false,
   },
   {
     name: "src",
@@ -24,6 +26,7 @@ export const MOCKFOLDERS: file[] = [
     type: "folder",
     workbench: false,
     isActive: true,
+    isMain: false,
   },
   {
     name: "image.png",
@@ -32,6 +35,7 @@ export const MOCKFOLDERS: file[] = [
     type: "file",
     workbench: false,
     isActive: true,
+    isMain: false,
   },
   {
     name: "index.tex",
@@ -40,6 +44,7 @@ export const MOCKFOLDERS: file[] = [
     type: "file",
     workbench: false,
     isActive: true,
+    isMain: true, // Main .tex file for "Active Project Name"
   },
   {
     name: "introduction asdadsadsadadada.tex",
@@ -48,6 +53,7 @@ export const MOCKFOLDERS: file[] = [
     type: "file",
     workbench: false,
     isActive: true,
+    isMain: false,
   },
   {
     name: "chapters", // Nuova cartella all'interno di src
@@ -56,6 +62,7 @@ export const MOCKFOLDERS: file[] = [
     type: "folder",
     workbench: false,
     isActive: true,
+    isMain: false,
   },
   {
     name: "chapter1.tex", // Nuovo file all'interno di chapters
@@ -64,6 +71,7 @@ export const MOCKFOLDERS: file[] = [
     type: "file",
     workbench: false,
     isActive: true,
+    isMain: false,
   },
   {
     name: "chapter2.tex", // Nuovo file all'interno di chapters
@@ -72,14 +80,7 @@ export const MOCKFOLDERS: file[] = [
     type: "file",
     workbench: false,
     isActive: true,
-  },
-  {
-    name: "config.json", // Nuovo file all'interno di src
-    id: 16,
-    parent_id: 2,
-    type: "file",
-    workbench: false,
-    isActive: true,
+    isMain: false,
   },
   {
     name: "img",
@@ -88,14 +89,7 @@ export const MOCKFOLDERS: file[] = [
     type: "folder",
     workbench: false,
     isActive: true,
-  },
-  {
-    name: "diagram.svg", // Nuovo file all'interno di img
-    id: 17,
-    parent_id: 5,
-    type: "file",
-    workbench: false,
-    isActive: true,
+    isMain: false,
   },
   {
     name: "chart.jpg", // Nuovo file all'interno di img
@@ -104,6 +98,7 @@ export const MOCKFOLDERS: file[] = [
     type: "file",
     workbench: false,
     isActive: true,
+    isMain: false,
   },
   {
     name: "icons", // Nuova cartella all'interno di img
@@ -112,6 +107,7 @@ export const MOCKFOLDERS: file[] = [
     type: "folder",
     workbench: false,
     isActive: true,
+    isMain: false,
   },
   {
     name: "icon_home.png", // Nuovo file all'interno di icons
@@ -120,6 +116,7 @@ export const MOCKFOLDERS: file[] = [
     type: "file",
     workbench: false,
     isActive: true,
+    isMain: false,
   },
   {
     name: "bibliography.bib",
@@ -128,30 +125,7 @@ export const MOCKFOLDERS: file[] = [
     type: "file",
     workbench: false,
     isActive: true,
-  },
-  {
-    name: "docs", // Nuova cartella per la documentazione
-    id: 21,
-    parent_id: 1,
-    type: "folder",
-    workbench: false,
-    isActive: true,
-  },
-  {
-    name: "README.md", // Nuovo file all'interno di docs
-    id: 22,
-    parent_id: 21,
-    type: "file",
-    workbench: false,
-    isActive: true,
-  },
-  {
-    name: "notes.txt", // Nuovo file all'interno di docs
-    id: 23,
-    parent_id: 21,
-    type: "file",
-    workbench: false,
-    isActive: true,
+    isMain: false,
   },
 
   // --- Progetto "Recent Project 2" (ID: 7) ---
@@ -162,80 +136,70 @@ export const MOCKFOLDERS: file[] = [
     type: "project",
     workbench: true,
     isActive: true,
+    isMain: false,
   },
   {
-    name: "Sono dell'altro progetto",
-    id: 8,
+    name: "documentation",
+    id: 36,
     parent_id: 7,
     type: "folder",
     workbench: false,
     isActive: true,
+    isMain: false,
   },
   {
-    name: "Sono dell'altro progetto",
-    id: 9,
-    parent_id: 7,
-    type: "folder",
-    workbench: false,
-    isActive: true,
-  },
-  {
-    name: "data", // Nuova cartella per i dati
-    id: 24,
-    parent_id: 7,
-    type: "folder",
-    workbench: false,
-    isActive: true,
-  },
-  {
-    name: "dataset.csv", // Nuovo file all'interno di data
-    id: 25,
-    parent_id: 24,
+    name: "user_guide.tex",
+    id: 37,
+    parent_id: 36,
     type: "file",
     workbench: false,
     isActive: true,
+    isMain: true, // Main .tex file for "Recent Project 2"
   },
   {
-    name: "scripts", // Nuova cartella per gli script
-    id: 26,
+    name: "project_overview.tex",
+    id: 38,
+    parent_id: 36,
+    type: "file",
+    workbench: false,
+    isActive: true,
+    isMain: false,
+  },
+  {
+    name: "assets",
+    id: 39,
     parent_id: 7,
     type: "folder",
     workbench: false,
     isActive: true,
+    isMain: false,
   },
   {
-    name: "process.py", // Nuovo file all'interno di scripts
-    id: 27,
-    parent_id: 26,
+    name: "logo.png",
+    id: 40,
+    parent_id: 39,
     type: "file",
     workbench: false,
     isActive: true,
+    isMain: false,
   },
   {
-    name: "report.pdf", // Nuovo file di report
-    id: 28,
+    name: "background.jpg",
+    id: 41,
+    parent_id: 39,
+    type: "file",
+    workbench: false,
+    isActive: true,
+    isMain: false,
+  },
+  {
+    name: "references.bib",
+    id: 42,
     parent_id: 7,
     type: "file",
     workbench: false,
     isActive: true,
-  },
-
-  // --- Altri elementi sparsi che erano già presenti ---
-  {
-    name: "Sono dell'altro progetto",
-    id: 10,
-    parent_id: 5, // Questo era sotto 'img' del primo progetto
-    type: "folder",
-    workbench: false,
-    isActive: true,
-  },
-  {
-    name: "Sono dell'altro progetto",
-    id: 11,
-    parent_id: 1, // Questo era sotto il primo progetto
-    type: "folder",
-    workbench: false,
-    isActive: true,
+    isMain: false,
   },
 
   // --- Nuovo Progetto "Archived Project Alpha" (ID: 29) ---
@@ -246,56 +210,52 @@ export const MOCKFOLDERS: file[] = [
     type: "project",
     workbench: false,
     isActive: false, // Esempio di progetto non attivo
+    isMain: false,
   },
   {
-    name: "old_files",
-    id: 30,
+    name: "archive_docs",
+    id: 43,
     parent_id: 29,
     type: "folder",
     workbench: false,
     isActive: false,
+    isMain: false,
   },
   {
-    name: "legacy_document.doc",
-    id: 31,
-    parent_id: 30,
+    name: "old_report.tex",
+    id: 44,
+    parent_id: 43,
     type: "file",
     workbench: false,
     isActive: false,
-  },
-
-  // --- Nuovo Progetto "Template Project" (ID: 32) ---
-  {
-    name: "Template Project",
-    id: 32,
-    parent_id: 0,
-    type: "project",
-    workbench: false,
-    isActive: true,
+    isMain: true, // Main .tex file for "Archived Project Alpha"
   },
   {
-    name: "template_src",
-    id: 33,
-    parent_id: 32,
+    name: "figures",
+    id: 45,
+    parent_id: 29,
     type: "folder",
     workbench: false,
-    isActive: true,
+    isActive: false,
+    isMain: false,
   },
   {
-    name: "main.js",
-    id: 34,
-    parent_id: 33,
+    name: "archived_diagram.png",
+    id: 46,
+    parent_id: 45,
     type: "file",
     workbench: false,
-    isActive: true,
+    isActive: false,
+    isMain: false,
   },
   {
-    name: "styles.css",
-    id: 35,
-    parent_id: 33,
+    name: "old_references.bib",
+    id: 47,
+    parent_id: 29,
     type: "file",
     workbench: false,
-    isActive: true,
+    isActive: false,
+    isMain: false,
   },
 ];
 

@@ -15,6 +15,7 @@ import {
 } from "./components/ui/resizable";
 import type { ImperativePanelHandle } from "react-resizable-panels";
 import { EditorSection } from "./components/editor-section";
+import { Toaster } from "sonner";
 
 export default function App() {
   const { editorSettings } = useContext(GlobalContext)!;
@@ -30,22 +31,6 @@ export default function App() {
       setSidebarOpen(true);
     }
     if (isSidebarFloating && event.clientX >= 260) {
-      setSidebarOpen(false);
-      setTimeout(() => {
-        setSidebarFloating(false);
-      }, 100);
-    }
-  };
-
-  const handleOnHoverIn = () => {
-    if (!isSidebarOpen) {
-      setSidebarFloating(true);
-      setSidebarOpen(true);
-    }
-  };
-
-  const handleOnHoverOut = () => {
-    if (isSidebarOpen && isSidebarFloating) {
       setSidebarOpen(false);
       setTimeout(() => {
         setSidebarFloating(false);
@@ -81,8 +66,6 @@ export default function App() {
           {/* Sidebar Trigger */}
           <Button
             className="h-8 w-8"
-            onMouseEnter={handleOnHoverIn}
-            onMouseLeave={handleOnHoverOut}
             onClick={handleClickSidebarTrigger}
             variant="ghost"
             size="icon"
@@ -133,6 +116,7 @@ export default function App() {
         </div>
         <CompileButton />
       </SidebarProvider>
+      <Toaster richColors />
     </div>
   );
 }
