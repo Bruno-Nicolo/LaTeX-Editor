@@ -17,6 +17,7 @@ type contextType = {
   editedItemId: number;
   setEditedItemId: React.Dispatch<React.SetStateAction<number>>;
   editorView: RefObject<editor.IStandaloneCodeEditor | null>;
+  editorDialog: RefObject<editor.IStandaloneCodeEditor | null>;
   editorSettings: {
     layout: {
       value: layoutSettings;
@@ -52,6 +53,7 @@ export default function GlobalState(props: { children: ReactNode }) {
   const [language, setLanguage] = useState(getLanguage());
 
   const editorViewRef = useRef<editor.IStandaloneCodeEditor | null>(null);
+  const editorDialogRef = useRef<editor.IStandaloneCodeEditor | null>(null);
 
   return (
     <GlobalContext.Provider
@@ -59,6 +61,7 @@ export default function GlobalState(props: { children: ReactNode }) {
         editedItemId: editedItemId,
         setEditedItemId: setEditedItemId,
         editorView: editorViewRef,
+        editorDialog: editorDialogRef,
         editorSettings: {
           layout: {
             value: layout,

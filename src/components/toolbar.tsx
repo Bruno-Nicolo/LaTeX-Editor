@@ -6,41 +6,31 @@ import {
   List,
   ListOrdered,
   MoreHorizontal,
-  Quote,
   RotateCcw,
   RotateCw,
-  Sigma,
-  Table,
+  Type,
   Underline,
 } from "lucide-react";
-import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
 import { useContext, type ReactNode } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { GlobalContext } from "@/context";
-// import {
-//   addCitation,
-//   addEquation,
-//   addOrderedLists,
-//   addUnorderedLists,
-//   applyBold,
-//   applyItalic,
-//   applyUnderline,
-//   insertImageCenter,
-//   insertImageLeft,
-//   insertImageRight,
-//   redoHistory,
-//   undoHistory,
-// } from "./editor/editor-utils";
+
 import type { editor } from "monaco-editor";
 import {
+  addParagraph,
+  addSection,
+  addSubsection,
+  addSubsubsection,
   applyBold,
   applyBulletList,
-  applyCite,
-  applyEquation,
   applyItalic,
   applyNumberedList,
   applyUnderline,
+  footnoteSizeFont,
+  hugeFont,
+  largeFont,
+  normalFont,
   placeImageCenter,
   placeImageLeft,
   placeImageRight,
@@ -61,6 +51,11 @@ export function Toolbar() {
         <ToolbarButton icon modiferMethod={applyUnderline}>
           <Underline />
         </ToolbarButton>
+        <FontSizePopover>
+          <ToolbarButton icon>
+            <Type />
+          </ToolbarButton>
+        </FontSizePopover>
       </ToolbarGroup>
 
       <Separator orientation="vertical" />
@@ -77,25 +72,11 @@ export function Toolbar() {
             <Heading />
           </ToolbarButton>
         </HeadingsPopover>
-      </ToolbarGroup>
-
-      <Separator orientation="vertical" />
-
-      <ToolbarGroup>
         <ImagePopover>
           <ToolbarButton icon>
             <Image />
           </ToolbarButton>
         </ImagePopover>
-        <ToolbarButton icon modiferMethod={applyEquation}>
-          <Sigma />
-        </ToolbarButton>
-        <ToolbarButton icon>
-          <Table />
-        </ToolbarButton>
-        <ToolbarButton icon modiferMethod={applyCite}>
-          <Quote />
-        </ToolbarButton>
       </ToolbarGroup>
 
       <Separator orientation="vertical" />
@@ -135,7 +116,7 @@ export function ToolbarButton(props: {
       }}
       className={`inline-flex items-center justify-${
         props.icon ? "center" : "left"
-      } gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive cursor-pointer 
+      } gap-2 whitespace-nowrap rounded-md text-md font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive cursor-pointer 
       ${
         props.icon ? "h-8 w-8" : "w-full p-2"
       } hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50
@@ -155,18 +136,12 @@ function HeadingsPopover(props: { children: ReactNode }) {
     <Popover>
       <PopoverTrigger>{props.children}</PopoverTrigger>
       <PopoverContent className="max-w-52" side="bottom" align="center">
-        <Button className="text-2xl w-full" variant={"ghost"}>
-          Heading 1
-        </Button>
-        <Button className="text-xl w-full" variant={"ghost"}>
-          Heading 2
-        </Button>
-        <Button className="text-lg w-full" variant={"ghost"}>
-          Heading 3
-        </Button>
-        <Button className="text-md w-full" variant={"ghost"}>
-          Heading 4
-        </Button>
+        <ToolbarButton modiferMethod={addSection}>Section</ToolbarButton>
+        <ToolbarButton modiferMethod={addSubsection}>Subsection</ToolbarButton>
+        <ToolbarButton modiferMethod={addSubsubsection}>
+          Subsubsection
+        </ToolbarButton>
+        <ToolbarButton modiferMethod={addParagraph}>Paragraph</ToolbarButton>
       </PopoverContent>
     </Popover>
   );
@@ -177,9 +152,29 @@ function ImagePopover(props: { children: ReactNode }) {
     <Popover>
       <PopoverTrigger>{props.children}</PopoverTrigger>
       <PopoverContent className="max-w-48" side="bottom" align="center">
-        <ToolbarButton modiferMethod={placeImageCenter}>Center</ToolbarButton>
-        <ToolbarButton modiferMethod={placeImageLeft}>Left</ToolbarButton>
-        <ToolbarButton modiferMethod={placeImageRight}>Right</ToolbarButton>
+        <ToolbarButton modiferMethod={placeImageCenter}>
+          Align Center
+        </ToolbarButton>
+        <ToolbarButton modiferMethod={placeImageLeft}>Align Left</ToolbarButton>
+        <ToolbarButton modiferMethod={placeImageRight}>
+          Align Right
+        </ToolbarButton>
+      </PopoverContent>
+    </Popover>
+  );
+}
+
+function FontSizePopover(props: { children: ReactNode }) {
+  return (
+    <Popover>
+      <PopoverTrigger>{props.children}</PopoverTrigger>
+      <PopoverContent className="max-w-48" side="bottom" align="center">
+        <ToolbarButton modiferMethod={footnoteSizeFont}>
+          Footnote Size
+        </ToolbarButton>
+        <ToolbarButton modiferMethod={normalFont}>Normal</ToolbarButton>
+        <ToolbarButton modiferMethod={largeFont}>Large</ToolbarButton>
+        <ToolbarButton modiferMethod={hugeFont}>Huge</ToolbarButton>
       </PopoverContent>
     </Popover>
   );

@@ -4,7 +4,7 @@ import { AppSidebar } from "./components/app-sidebar";
 import { SiteHeader } from "./components/site-header";
 import { SidebarInset, SidebarProvider } from "./components/ui/sidebar";
 import { Button } from "./components/ui/button";
-import { useContext, useRef, useState } from "react";
+import { useContext, useRef, useState, type Ref } from "react";
 import { GlobalContext } from "./context";
 import { PdfViewer } from "./components/pdf-viewer";
 import { PanelBottom, SidebarIcon } from "lucide-react";
@@ -22,6 +22,7 @@ export default function App() {
   const layoutPreferences = editorSettings.layout.value;
   const [isSidebarFloating, setSidebarFloating] = useState(false);
   const [isSidebarOpen, setSidebarOpen] = useState(true);
+  const sidebarRef = useRef<ImperativePanelHandle>(null);
 
   const toggleFloatingSidebar = (
     event: React.MouseEvent<HTMLElement, MouseEvent>
@@ -42,6 +43,9 @@ export default function App() {
     if (isSidebarFloating) {
       setSidebarFloating(false);
     } else setSidebarOpen(!isSidebarOpen);
+    if (isSidebarOpen) {
+      sidebarRef.current?.collapse();
+    } else sidebarRef.current?.resize(20);
   };
 
   const ref = useRef<ImperativePanelHandle>(null);
@@ -61,6 +65,7 @@ export default function App() {
         className="flex flex-col"
         open={isSidebarOpen}
         onOpenChange={(value) => setSidebarOpen(value)}
+        sidebarRef={sidebarRef}
       >
         <SiteHeader>
           {/* Sidebar Trigger */}
@@ -84,35 +89,34 @@ export default function App() {
           </Button>
         </SiteHeader>
         <div className="flex h-[calc(100svh-var(--header-height)-3rem)]!">
-          <AppSidebar variant={isSidebarFloating ? "floating" : "sidebar"} />
-          <SidebarInset
-            className="flex flex-row overflow-x-hidden"
-            onMouseMove={toggleFloatingSidebar}
-          >
-            {layoutPreferences.modeName == "HalfSplit" ? (
-              <ResizablePanelGroup direction="horizontal">
-                <ResizablePanel defaultSize={50} minSize={10}>
-                  <EditorSection drawerRef={ref} drawerToggle={TogglePanel} />
-                </ResizablePanel>
+          <ResizablePanelGroup direction="horizontal">
+            <ResizablePanel
+              collapsible
+              defaultSize={20}
+              minSize={15}
+              maxSize={35}
+              ref={sidebarRef}
+              collapsedSize={0}
+            >
+              <AppSidebar
+                variant={isSidebarFloating ? "floating" : "sidebar"}
+              />
+            </ResizablePanel>
 
-                <ResizableHandle />
-
-                <ResizablePanel defaultSize={50} minSize={10}>
-                  <PdfViewer layoutMode={layoutPreferences.modeName} />
-                </ResizablePanel>
-              </ResizablePanelGroup>
-            ) : (
-              <>
-                <div className={`${layoutPreferences.editorStyle}`}>
-                  <EditorSection drawerRef={ref} drawerToggle={TogglePanel} />
-                </div>
-
-                <div className={`${layoutPreferences.pdfStyle} h-full`}>
-                  <PdfViewer layoutMode={layoutPreferences.modeName} />
-                </div>
-              </>
-            )}
-          </SidebarInset>
+            <ResizableHandle />
+            <ResizablePanel defaultSize={80} minSize={10}>
+              <SidebarInset
+                className="flex flex-row overflow-x-hidden h-full"
+                onMouseMove={toggleFloatingSidebar}
+              >
+                <AppMain
+                  modeName={layoutPreferences.modeName}
+                  drawerRef={ref}
+                  toggleDrawer={TogglePanel}
+                />
+              </SidebarInset>
+            </ResizablePanel>
+          </ResizablePanelGroup>
         </div>
         <CompileButton />
       </SidebarProvider>
@@ -129,5 +133,47 @@ function CompileButton() {
         <span className="text-xs">⌘</span> + Enter
       </kbd>
     </Button>
+  );
+}
+
+function AppMain(props: {
+  modeName: string;
+  drawerRef: Ref<ImperativePanelHandle>;
+  toggleDrawer: () => void;
+}) {
+  const { editorSettings } = useContext(GlobalContext)!;
+  const layoutPreferences = editorSettings.layout.value;
+
+  if (props.modeName == "HalfSplit")
+    return (
+      <ResizablePanelGroup direction="horizontal">
+        <ResizablePanel defaultSize={50} minSize={10}>
+          <EditorSection
+            drawerRef={props.drawerRef}
+            drawerToggle={props.toggleDrawer}
+          />
+        </ResizablePanel>
+
+        <ResizableHandle />
+
+        <ResizablePanel defaultSize={50} minSize={10}>
+          <PdfViewer layoutMode={props.modeName} />
+        </ResizablePanel>
+      </ResizablePanelGroup>
+    );
+
+  return (
+    <>
+      <div className={`${layoutPreferences.editorStyle}`}>
+        <EditorSection
+          drawerRef={props.drawerRef}
+          drawerToggle={props.toggleDrawer}
+        />
+      </div>
+
+      <div className={`${layoutPreferences.pdfStyle} h-full`}>
+        <PdfViewer layoutMode={props.modeName} />
+      </div>
+    </>
   );
 }

@@ -251,3 +251,166 @@ export function placeImageRight(editor: editor.IStandaloneCodeEditor) {
     },
   ]);
 }
+
+export function footnoteSizeFont(editor: editor.IStandaloneCodeEditor) {
+  const selection = editor.getSelection();
+  const model = editor.getModel();
+
+  if (!selection || !model) {
+    return;
+  }
+
+  const selectedText = model.getValueInRange(selection);
+  const newText = `\\footnotesize{${selectedText}}`;
+
+  // Modifica il testo selezionato
+  editor.executeEdits("footnotesize-font-command", [
+    {
+      range: selection,
+      text: newText,
+      forceMoveMarkers: true,
+    },
+  ]);
+}
+
+export function normalFont(editor: editor.IStandaloneCodeEditor) {
+  const selection = editor.getSelection();
+  const model = editor.getModel();
+
+  if (!selection || !model) {
+    return;
+  }
+
+  const selectedText = model.getValueInRange(selection);
+  const newText = `\\normal{${selectedText}}`;
+
+  // Modifica il testo selezionato
+  editor.executeEdits("normal-font-command", [
+    {
+      range: selection,
+      text: newText,
+      forceMoveMarkers: true,
+    },
+  ]);
+}
+export function largeFont(editor: editor.IStandaloneCodeEditor) {
+  const selection = editor.getSelection();
+  const model = editor.getModel();
+
+  if (!selection || !model) {
+    return;
+  }
+
+  const selectedText = model.getValueInRange(selection);
+  const newText = `\\large{${selectedText}}`;
+
+  // Modifica il testo selezionato
+  editor.executeEdits("large-font-command", [
+    {
+      range: selection,
+      text: newText,
+      forceMoveMarkers: true,
+    },
+  ]);
+}
+
+export function hugeFont(editor: editor.IStandaloneCodeEditor) {
+  const selection = editor.getSelection();
+  const model = editor.getModel();
+
+  if (!selection || !model) {
+    return;
+  }
+
+  const selectedText = model.getValueInRange(selection);
+  const newText = `\\huge{${selectedText}}`;
+
+  // Modifica il testo selezionato
+  editor.executeEdits("huge-font-command", [
+    {
+      range: selection,
+      text: newText,
+      forceMoveMarkers: true,
+    },
+  ]);
+}
+export function addSection(editor: editor.IStandaloneCodeEditor) {
+  const selection = editor.getSelection();
+  const model = editor.getModel();
+
+  if (!selection || !model) {
+    return;
+  }
+
+  const selectedText = model.getValueInRange(selection);
+  const newText = `\\section{${selectedText}}`;
+
+  // Modifica il testo selezionato
+  editor.executeEdits("section-command", [
+    {
+      range: selection,
+      text: newText,
+      forceMoveMarkers: true,
+    },
+  ]);
+}
+export function addSubsection(editor: editor.IStandaloneCodeEditor) {
+  const selection = editor.getSelection();
+  const model = editor.getModel();
+
+  if (!selection || !model) {
+    return;
+  }
+
+  const selectedText = model.getValueInRange(selection);
+  const newText = `\\subsection{${selectedText}}`;
+
+  // Modifica il testo selezionato
+  editor.executeEdits("subsection-command", [
+    {
+      range: selection,
+      text: newText,
+      forceMoveMarkers: true,
+    },
+  ]);
+}
+export function addSubsubsection(editor: editor.IStandaloneCodeEditor) {
+  const selection = editor.getSelection();
+  const model = editor.getModel();
+
+  if (!selection || !model) {
+    return;
+  }
+
+  const selectedText = model.getValueInRange(selection);
+  const newText = `\\subsubsection{${selectedText}}`;
+
+  // Modifica il testo selezionato
+  editor.executeEdits("subsubsection-command", [
+    {
+      range: selection,
+      text: newText,
+      forceMoveMarkers: true,
+    },
+  ]);
+}
+export function addParagraph(editor: editor.IStandaloneCodeEditor) {
+  const selection = editor.getSelection();
+  const model = editor.getModel();
+
+  if (!selection || !model) {
+    return;
+  }
+
+  const selectedText = model.getValueInRange(selection);
+  const newText = `\\paragraph{${selectedText}}`;
+
+  // Modifica il testo selezionato
+  editor.executeEdits("paragraph-command", [
+    {
+      range: selection,
+      text: newText,
+      forceMoveMarkers: true,
+    },
+  ]);
+}

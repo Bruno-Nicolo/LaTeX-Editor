@@ -6,7 +6,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useState, type ReactNode } from "react";
-import { Button } from "./ui/button";
 import { MonacoEditor } from "./editor/editorMonaco";
 import { Separator } from "./ui/separator";
 
@@ -15,13 +14,12 @@ import {
   Bookmark,
   BookOpen,
   ChevronRight,
+  Crown,
   File,
-  FileBadge,
   Folder,
   Frown,
   Image,
   LibraryBig,
-  Maximize2,
   Pin,
 } from "lucide-react";
 import {
@@ -95,7 +93,7 @@ function FileIcon(props: { data: file }) {
   ) : props.data.name.includes(".png") || props.data.name.includes(".jpg") ? (
     <Image />
   ) : props.data.isMain ? (
-    <FileBadge />
+    <Crown className="stroke-amber-400 fill-amber-100" />
   ) : (
     <File />
   );
@@ -166,12 +164,6 @@ function WorkbenchDialog(props: {
       </DialogTrigger>
       <DialogContent className="min-w-[70%] h-[80%] flex flex-col">
         <DialogHeader className="truncate ">
-          <Button
-            variant={"ghost"}
-            className="w-fit absolute m-2 right-4 top-1"
-          >
-            <Maximize2 />
-          </Button>
           <DialogTitle className="truncate mr-8 pb-2">
             <span>{getFilePath(props.item)}</span>
           </DialogTitle>
@@ -180,7 +172,7 @@ function WorkbenchDialog(props: {
         {/* Mostra l'editor solo con file LaTeX */}
         {props.item.name.includes(".tex") ||
         props.item.name.includes(".bib") ? (
-          <MonacoEditor />
+          <MonacoEditor readonly={true} />
         ) : (
           <p>Embed photo</p>
         )}

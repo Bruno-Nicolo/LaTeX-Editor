@@ -16,7 +16,7 @@ export function EditorSection(props: {
     <ResizablePanelGroup direction="vertical">
       {/* Editor */}
       <ResizablePanel defaultSize={65}>
-        <MonacoEditor />
+        <MonacoEditor readonly={false} />
       </ResizablePanel>
 
       <ResizableHandle />

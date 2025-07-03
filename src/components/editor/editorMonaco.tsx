@@ -12,9 +12,11 @@ import { themesArray } from "./latex-language-Monaco/theme";
 import { defineAutocompletionProvider } from "./latex-language-Monaco/autocompletion";
 import { defineLinter } from "./latex-language-Monaco/linting";
 
-export function MonacoEditor(props: { className?: string }) {
+export function MonacoEditor(props: { className?: string; readonly: boolean }) {
   const monacoRef = useRef<typeof import("monaco-editor") | null>(null);
   const editorRef = useContext(GlobalContext)?.editorView;
+  const editorDialogRef = useContext(GlobalContext)?.editorDialog;
+
   // Style Settings
   const editorStyleSettings = useContext(GlobalContext)?.editorSettings;
   const theme = editorStyleSettings?.theme.value;
@@ -81,7 +83,9 @@ export function MonacoEditor(props: { className?: string }) {
       });
     }
 
-    editorRef!.current = editor;
+    if (props.readonly) {
+      editorDialogRef!.current = editor;
+    } else editorRef!.current = editor;
   };
 
   return (
@@ -96,6 +100,8 @@ export function MonacoEditor(props: { className?: string }) {
         fontSize: fontSize,
         fontFamily: `var(--font-${fontFamily})`,
         minimap: { enabled: false },
+        readOnly: props.readonly,
+        wordWrap: "on",
       }}
     />
   );

@@ -10,7 +10,7 @@ import {
 import { GlobalContext } from "@/context";
 import { SidebarMenuAction } from "./ui/sidebar";
 import {
-  FileBadge,
+  Crown,
   FilePlus,
   FolderPlus,
   MoreHorizontal,
@@ -55,7 +55,7 @@ export function NavDropDown(props: { item: file }) {
         {/* SET AS MAIN FILE */}
         {props.item.name.includes(".tex") && (
           <DropdownMenuCheckboxItem checked={props.item.workbench}>
-            <FileBadge className="text-muted-foreground" />
+            <Crown className="text-muted-foreground" />
             <span>Set as Main</span>
           </DropdownMenuCheckboxItem>
         )}

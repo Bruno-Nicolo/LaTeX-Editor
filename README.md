@@ -46,18 +46,17 @@
 
 **LEVEL 5**
 
-- [ ] font size: normal, small, footnote size, ...
+- [x] font size: normal, small, footnote size, ...
 - [ ] colore testo
 - [ ] commenti
-- [ ] change headings to Section, subsection, subsubsection, paragraph
+- [x] change headings to Section, subsection, subsubsection, paragraph
 
 **LEVEL 6**
 
 - [ ] support pane
   - [ ] math
   - [ ] errori, warning
-  - [ ] file content
-  - [ ] floating e pinnato
+  - [x] bibliografia
 
 **LEVEL 7**
 
@@ -72,25 +71,21 @@
 
 ## WEEKLY TODOs
 
-- stato globale per main editor e stato per "preview-only editor"
-
-- [x] cambia i valori delle spellcheck languages tranducendoli
-- [x] Upload file button
-
-- [x] sidebar floating on hover
-
-- [x] Creare componente separato workbench.tsx
-- [x] rimuovere "workbench" in file tree
-- [x] rimuovere opzioni in workbench -> icona pin al posto dei 3 puntini
-- [x] fix renamingArea component
-- [x] resizable Items
-
-- [x] "set as main file" in file .tex (icona stella + badge)
+- [ ] change remote origin git
+- [x] no bottone fullscreen in dialog
+- [x] sidebar ridimensionabile
 - [ ] Linting dal progetto del prof
+  - [ ] Problems da rimuovere -> toast in verticale in alto. Ma non sono troppo piccoli per visualizzare un errore?
+- [ ] fix floating sidebar in modalità overlap
+- [ ] editor tabs
+- [ ] Table tool
+- [ ] commenti e annotazioni
+- [ ] Equation tool
+- [ ] colore testo
 
-- [ ] tabelle
-- [x] Utility menu: errors, citations, equations, ecc.
-- [ ] aggiungi worker
+- [ ] drag & drop file in sidebar
+
+Spostare il tasto "Compile" in alto vicino alla toolbar (?). Così avrei più spazio verticale libero e riempio un po' l'header
 
 ##############################################################
 
@@ -100,17 +95,7 @@ param 0 = condensato
 param 1 = standard
 param 2 = cross-ref
 
-- [ ] change remote origin git
-- [x] Citation tool
-
-  - [x] copia il risultato su clipboard
-  - [x] toast con "copied to clipboard"
-
-  API con google scholar (?)
-
-- [ ] editor tabs
-- [ ] Equation tool
-- [ ] Tables tool
+API con google scholar (?)
 
 ### IDEAS:
 

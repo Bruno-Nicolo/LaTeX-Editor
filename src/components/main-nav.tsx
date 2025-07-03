@@ -20,7 +20,7 @@ import {
   Folder,
   LibraryBig,
   Image,
-  FileBadge,
+  Crown,
 } from "lucide-react";
 import {
   SidebarGroup,
@@ -71,7 +71,7 @@ function GetIcon(props: { item: file }) {
   ) : props.item.name.includes(".png") || props.item.name.includes(".jpg") ? (
     <Image />
   ) : props.item.isMain ? (
-    <FileBadge />
+    <Crown className="stroke-amber-400 fill-amber-100" />
   ) : (
     <File />
   );
